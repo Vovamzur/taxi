@@ -1,0 +1,10 @@
+{
+  "files.eol": "\n",
+  "editor.rulers": [
+    80,
+    100
+  ],
+  "workbench.colorCustomizations": {
+    "editorRuler.foreground": "#4a39fd"
+  }
+}

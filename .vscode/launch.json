@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "nodemon",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/authentication/src/index.ts",
+      "preLaunchTask": "tscauth",
+      "restart": true,
+      "envFile": "${workspaceFolder}/authentication/.env",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "outFiles": ["${workspaceFolder}/authentication/build/**/*.js"]
+    },
+  ]
+}

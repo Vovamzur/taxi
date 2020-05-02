@@ -1,0 +1,27 @@
+# Authentication service
+
+### Login
+POST http://localhost:3001/api/auth/login 
+Content-Type: application/json
+
+{
+  "username": "Vova",
+  "password": "password"
+}
+
+### Registration
+POST http://localhost:3001/api/auth/registration
+Content-Type: application/json
+
+{
+  "username": "Vova",
+  "password": "asd"
+}
+
+### Verify token
+POST http://localhost:3001/api/token/verify
+Content-Type: application/json
+
+{
+  "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NDM5OTg4LCJleHAiOjE1ODg1MjYzODh9.4DGPBuHmTIBZJ_-gb8a8r0pfGewS6bBewNshNCRRY7Q"
+}
