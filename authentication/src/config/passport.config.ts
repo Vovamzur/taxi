@@ -1,15 +1,21 @@
 import * as yup from 'yup';
-
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
-import { prisma } from './../utils/createPrismaClient';
+import prisma from './../db';
 import cryptoHelper from '../helpers/crypto.helper';
+import { secret } from './../config/jwt.config';
 
 const schema = yup.object().shape({
   username: yup.string().ensure(),
   password: yup.string().ensure(),
 });
+
+const options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: secret,
+};
 
 passport.use(
   'login',
@@ -61,6 +67,19 @@ passport.use(
       }
     },
   ),
+);
+
+passport.use(
+  new JwtStrategy(options, async ({ id }, done) => {
+    try {
+      const user = await prisma.user.findOne({ where: { id } });
+      return user
+        ? done(null, user)
+        : done({ status: 401, message: 'Token is invalid.' }, null);
+    } catch (err) {
+      return done(err);
+    }
+  }),
 );
 
 passport.serializeUser((user, done) => done(null, user));

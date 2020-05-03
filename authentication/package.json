@@ -8,7 +8,7 @@
     "start": "croos-env NODE_ENV=production node ./build/index.js",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
     "tslint": "tslint --project tsconfig.json",
-    "initdb": "prisma migrate save --experimental && prisma migrate up --experimental",
+    "initdb": "prisma generate && prisma migrate save --experimental && prisma migrate up --experimental",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "keywords": [],

@@ -1,10 +1,6 @@
-user_role:
-  - ID: UUID unique (pk),
-  - name: string unique ('driver' | 'client' | 'admin')
-  
 user:
   - ID: UUID unique (pk),
-  - role: UUID (fk->user_role.ID)
+  - role: ('driver' | 'client' | 'admin')
   - username: string unique,
   - password: string
   - fio?: string,

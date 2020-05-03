@@ -1,7 +1,7 @@
-import { prisma } from './../../utils/createPrismaClient';
+import { User } from '@prisma/client';
+import prisma from '../../db';
 import tokenHelper from '../../helpers/token.helper';
 import cryptoHelper from '../../helpers/crypto.helper';
-import { User } from '@prisma/client';
 
 export const login = async ({ password: _, ...user }: User) => {
   return {

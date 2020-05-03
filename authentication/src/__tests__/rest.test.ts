@@ -1,6 +1,6 @@
 import app from '../app';
 import request from 'supertest';
-import { prisma } from '../utils/createPrismaClient';
+import prisma from '../db';
 import { User } from '@prisma/client';
 import cryptoHelper from '../helpers/crypto.helper';
 import tokenHelper from '../helpers/token.helper';
