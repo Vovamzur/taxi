@@ -33,7 +33,7 @@ driver:
 
 order_status:
   - ID: UUID unique,
-  - name: 'pending' | 'started' | 'finished'
+  - name: string unique ('pending' | 'submited' | 'started' | 'finished' | 'canceled')
 
 order:
   - ID: UUID unique (pk),
