@@ -1,18 +1,17 @@
 import { Router } from 'express';
 
 import * as userService from '../services/user.service';
-import jwtMiddleware from '../middlewares/jwt.middleware';
 import userSchema from './../../validations/user.schema';
 
 const router: Router = Router();
 
 router
-  .get('/:id', jwtMiddleware, (req, res, next) =>
+  .get('/:id', (req, res, next) =>
     userService.getUserById(parseInt(req.params.id, 10))
       .then((data: any) => res.json(data))
       .catch(next),
   )
-  .put('/update/:id', jwtMiddleware, async (req, res, next) => {
+  .put('/update/:id', async (req, res, next) => {
     const user = req.body;
     const userID = parseInt(req.params.id, 10);
     try {

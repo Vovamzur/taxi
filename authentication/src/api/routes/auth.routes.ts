@@ -5,7 +5,6 @@ import * as userService from '../services/user.service';
 import * as authService from '../services/auth.service';
 import loginMiddleware from '../middlewares/login.middleware';
 import registrationMiddleware from '../middlewares/registration.middleware';
-import jwtMiddleware from '../middlewares/jwt.middleware';
 
 const router: Router = Router();
 
@@ -22,7 +21,7 @@ router
       .then((data: any) => res.send(data))
       .catch(next),
   )
-  .get('/user', jwtMiddleware, (req, res, next) =>
+  .get('/user', (req, res, next) =>
     userService
       .getUserById((req.user as User).id)
       .then((data: any) => res.send(data))
