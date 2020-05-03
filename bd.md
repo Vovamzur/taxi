@@ -6,12 +6,7 @@ user:
   - fio?: string,
   - sex?: 'male' | 'female',
   - age?: int,
-
-client:
-  - ID: UUID unique,
-  - userID: UUID unique (fk->user.ID),
   - avatar?
-  ...
 
 car:
   - ID: UUID unique,

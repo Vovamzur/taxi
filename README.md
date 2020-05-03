@@ -20,3 +20,5 @@
  - Typescript
  - React (React Native)
  - Google Maps
+ - Kubernetes
+ - Mocha

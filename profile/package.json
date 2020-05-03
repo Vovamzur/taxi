@@ -4,9 +4,35 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "cross-env NODE_ENV=production node ./build/index.js",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
+    "tslint": "tslint --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "nodejs",
+    "typecript",
+    "typeorm",
+    "express"
+  ],
+  "author": "Volodymyr Mazur",
+  "license": "ISC",
+  "dependencies": {
+    "class-validator": "^0.12.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pg": "^8.0.3",
+    "ts-node": "^8.10.1",
+    "typeorm": "^0.2.24",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.6",
+    "@types/node": "^13.13.4",
+    "cross-env": "^7.0.2",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "tslint-config-prettier": "^1.18.0"
+  }
 }
