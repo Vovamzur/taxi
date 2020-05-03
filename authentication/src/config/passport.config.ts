@@ -1,16 +1,11 @@
-import * as yup from 'yup';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import prisma from './../db';
 import cryptoHelper from '../helpers/crypto.helper';
+import loginSchema from './../validations/login.schema';
 import { secret } from './../config/jwt.config';
-
-const schema = yup.object().shape({
-  username: yup.string().ensure(),
-  password: yup.string().ensure(),
-});
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -24,7 +19,7 @@ passport.use(
     async (username, password, done) => {
       try {
         try {
-          await schema.validate({ username, password }, { strict: true });
+          await loginSchema.validate({ username, password }, { strict: true });
         } catch ({ errors }) {
           const message = `Invalid body: ${Object.values(errors).join('\n')}`;
           return done({ message, status: 401 }, null);
@@ -51,7 +46,7 @@ passport.use(
     { usernameField: 'username', passReqToCallback: true },
     async ({ body }, username, password, done) => {
       try {
-        await schema.validate(body, { strict: true });
+        await loginSchema.validate(body, { strict: true });
       } catch ({ errors }) {
         const message = `Invalid body: ${Object.values(errors).join('\n')}`;
         return done({ message, status: 401 }, null);

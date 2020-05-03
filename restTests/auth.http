@@ -25,3 +25,18 @@ Content-Type: application/json
 {
   "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NDM5OTg4LCJleHAiOjE1ODg1MjYzODh9.4DGPBuHmTIBZJ_-gb8a8r0pfGewS6bBewNshNCRRY7Q"
 }
+
+### Get user by id
+GET http://localhost:3001/api/user/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NDM5OTg4LCJleHAiOjE1ODg1MjYzODh9.4DGPBuHmTIBZJ_-gb8a8r0pfGewS6bBewNshNCRRY7Q
+
+### Update user
+PUT http://localhost:3001/api/user/update/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NDM5OTg4LCJleHAiOjE1ODg1MjYzODh9.4DGPBuHmTIBZJ_-gb8a8r0pfGewS6bBewNshNCRRY7Q
+
+{
+  "username": "Vova",
+  "age": 12
+}
