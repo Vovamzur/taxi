@@ -7,7 +7,7 @@ const router: Router = Router();
 
 router
   .get('/:id', (req, res, next) =>
-    userService.getUserById(parseInt(req.params.id, 10))
+    userService.getUserById(parseInt(req.params.id, 10), next)
       .then((data: any) => res.json(data))
       .catch(next),
   )
@@ -21,11 +21,11 @@ router
       return res.status(400).end(message);
     }
     try {
-      const userFromDb = await userService.getUserById(userID);
+      const userFromDb = await userService.getUserById(userID, next);
       if (!userFromDb) {
-        res.status(400).end(`There is no user with such id ${userID}`);
+        return next({ status: 400, message: `There is no user with such id ${userID}` });
       }
-      const updatedUser = await userService.updateUserByID(userID, user);
+      const updatedUser = await userService.updateUserByID(userID, user, next);
       res.json(updatedUser);
     } catch (err) {
       next(err);

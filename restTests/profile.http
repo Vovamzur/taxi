@@ -1,0 +1,3 @@
+### Get driver profile by id 
+GET http://localhost:3002/api/profile/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NjE3NDMxLCJleHAiOjE1ODg3MDM4MzF9.MQ2RYw1do25yJKlS6HRIrd4aacsiLBko4eFRNNk0r08

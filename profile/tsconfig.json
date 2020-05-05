@@ -11,6 +11,7 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
+    "strictPropertyInitialization": false
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]

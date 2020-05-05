@@ -16,6 +16,7 @@
     "member-access": false,
     "prefer-for-of": false,
     "no-string-literal": false,
+    "curly":false,
     "variable-name": false
   },
   "defaultSeverity": "warning"

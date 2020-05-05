@@ -7,9 +7,11 @@ import app from './app';
 
 dotenv.config();
 
+global.variable = 'as';
+
 const port: number = process.env.PROFILE_PORT || 3000;
 const httpServer: Server = http.createServer(app);
-let connection: Connection;
+let dbConnection: Connection;
 
 start();
 
@@ -20,8 +22,8 @@ process.on('unhandledRejection', logError);
 
 async function start() {
   try {
-    connection = await createConnection(dbConfig);
-    await connection.runMigrations();
+    dbConnection = await createConnection(dbConfig);
+    await dbConnection.runMigrations();
     httpServer.listen(port, () => {
       console.log(`Profile service start on port ${port}`);
     });
@@ -33,7 +35,7 @@ async function start() {
 
 async function gracefullShutdown() {
   try {
-    await connection.close();
+    await dbConnection.close();
     httpServer.close((error) => {
       if (error) {
         logError(error);

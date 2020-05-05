@@ -12,8 +12,8 @@ describe('Auth endpoints', () => {
 
   beforeAll(() => {
     user = {
-      id: 1, role: 'CLIENT', username: 'username',
-      password: 'password', fio: 'fio', sex: 'FEMALE', age: 11,
+      id: 1, role: 'CLIENT', username: 'username', password: 'password',
+      fio: 'fio', sex: 'FEMALE', age: 11, avatarUrl: 'avatar',
     };
   });
 
@@ -170,7 +170,7 @@ describe('Auth endpoints', () => {
         .set(headers);
       const { status, body } = response;
 
-      expect(status).toEqual(500);
+      expect(status).toEqual(404);
       expect(body.message).toEqual('There is no user with such ID!');
     });
   });

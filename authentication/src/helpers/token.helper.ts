@@ -7,7 +7,7 @@ const promisifyTokenVerify = promisify(jsonwebtoken.verify);
 
 export default {
   createToken: ({ id }: { id: User['id'] }) => jsonwebtoken.sign({ id }, secret, { expiresIn }),
-  verifyToken: async (token: string) => {
+  verifyToken: async (token: string): Promise<boolean> => {
     try {
       const user = await promisifyTokenVerify(token, secret);
       return !!user;
