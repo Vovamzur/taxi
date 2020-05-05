@@ -6,9 +6,9 @@ const router: Router = Router();
 router
   .post('/verify', (req, res, next) => {
     const { token } = req.body;
-    if (!token) return res.send(401);
+    if (!token) return res.json(401);
     tokenService.veriFyToken(token)
-      .then((isValid: boolean) => res.send(isValid ? 200 : 403))
+      .then((isValid: boolean) => res.json(isValid ? 200 : 403))
       .catch(next);
   });
 

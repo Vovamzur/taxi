@@ -10,7 +10,6 @@ type GetCarById = (id: Car['id'], next: NextFunction) => ServiceResult
 
 export const getCarById: GetCarById = async (id, next) => {
   const car = await getCustomRepository(carRepository).findOne({ where: { id } });
-
   if (!car) {
     return next({ status: 404, message: `There is no car with such id: ${id}` })
   }
@@ -22,7 +21,6 @@ type CreateCar = (car: Car, next: NextFunction) => ServiceResult
 
 export const createCar: CreateCar = async (car, next) => {
   const newCar = await getCustomRepository(carRepository).save(car);
-
   if (!newCar) {
     return next({ status: 500, message: `can't create a new car` });
   }

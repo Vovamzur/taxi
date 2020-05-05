@@ -23,7 +23,7 @@ router
   )
   .get('/user', (req, res, next) =>
     userService
-      .getUserById((req.user as User).id)
+      .getUserById((req.user as User).id, next)
       .then((data: any) => res.send(data))
       .catch(next),
   );

@@ -1,40 +1,43 @@
 import authApi from './../../helpers/auth-api.helper';
 import { User } from './models/User';
-import { Driver } from 'models';
-import { NextFunction } from 'express';
+import { Driver, CustomError } from 'models';
 
-type VerifyToken = (token: string, next: NextFunction) => Promise<number|void>
+const error: CustomError = { status: 502, message: 'User service inaccessible' };
 
-export const verifyToken: VerifyToken = async (token, next) => {
+type VerifyToken = (token: string) => Promise<{ statusCode?: number, error?: CustomError }>
+
+export const verifyToken: VerifyToken = async (token) => {
   try {
-    const statusCode = await authApi.post('/token/verify', { token }) as number;
+    const response = await authApi.post('/token/verify', { token });
+    const statusCode = response.data as number
 
-    return statusCode;
-  } catch (err) {
-    return next({ status: 502, message: 'User service inaccessible' })
+    return { statusCode };
+  } catch {
+    return { error }
   }
 }
 
-type GetUSerById = (id: number, next: NextFunction) => Promise<User|void>;
+type GetUSerById = (id: number) => Promise<{ user?: User, error?: CustomError }>;
 
-export const getUserById: GetUSerById = async (id, next) => {
+export const getUserById: GetUSerById = async (id) => {
   try {
     const user = await authApi.get(`/user/${id}`) as User;
 
-    return user;
-  } catch (err) {
-    return next({ status: 502, message: 'User service inaccessible' })
+    return { user };
+  } catch {
+    return { error };
   }
 }
 
-type UpdateUserByID = (userID: Driver['userID'], user: User, next: NextFunction) => Promise<User|void>
+type UpdateUserByID = (userID: Driver['userID'], user: User) =>
+  Promise<{ updatedUser?: User, error?: CustomError }>;
 
-export const updateUserById: UpdateUserByID = async (userId, user, next) => {
+export const updateUserById: UpdateUserByID = async (userId, user) => {
   try {
     const updatedUser = await authApi.put(`/user/${userId}`, user) as User;
 
-    return updatedUser;
-  } catch (err) {
-    return next({ status: 502, message: 'User service inaccessible' })
+    return { updatedUser };
+  } catch {
+    return { error };
   }
 }

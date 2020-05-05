@@ -2,15 +2,11 @@ import { RequestHandler} from 'express'
 import * as authService from './../../externalApi/authService';
 
 const authorizationMiddleware: RequestHandler = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization as string;
-    const statusCode = await authService.verifyToken(authHeader, next);
-    if (statusCode === undefined) return
-    if (statusCode === 200) { return next(); }
-    res.status(statusCode).end();
-  } catch (err) {
-    res.status(500).end();
-  }
+  const authHeader = req.headers.authorization as string;
+  const { statusCode, error } = await authService.verifyToken(authHeader);
+  if (error) return next(error);
+  if (statusCode === 200) return next();
+  res.sendStatus(statusCode as number);
 }
 
 export default authorizationMiddleware;

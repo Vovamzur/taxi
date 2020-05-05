@@ -1,6 +1,7 @@
 import { ErrorRequestHandler } from 'express';
+import { CustomError } from './../../models';
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err: CustomError, req, res, next) => {
   if (res.headersSent) {
     next(err);
   } else {
