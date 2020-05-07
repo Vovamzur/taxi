@@ -22,3 +22,9 @@
  - Google Maps
  - Kubernetes
  - Mocha
+ - GraphQl
+ - Sequelize
+ - Babel
+ - Passport.js
+ - Yarn
+ - Docker

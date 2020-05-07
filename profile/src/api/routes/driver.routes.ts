@@ -9,7 +9,7 @@ router.get('/:id', driverValidations.getByID, (req, res, next) =>
   driverService.getDrivertById(req.params.id, next)
     .then(data => res.send(data))
     .catch(next)
-)
+  )
   .post('/', driverValidations.postDriver, (req, res, next) =>
     driverService.createDriver(req.body, next)
       .then(data => res.send(data))

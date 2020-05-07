@@ -19,18 +19,14 @@ driver:
   - ID: UUID unique (pk),
   - userID: UUID (fk->user.ID),
   - carID: UUID (fk->car.ID), 
-  - numberOfTrips: int autoincrement default 0
+  - numberOfTrips: int default 0
   - mark?: float (0.0...5.0),
-
-order_status:
-  - ID: UUID unique,
-  - name: string unique ('pending' | 'submited' | 'started' | 'finished' | 'canceled')
 
 order:
   - ID: UUID unique (pk),
   - clientID: UUID (fk->client.ID),
   - driverID: UUID (fk->order_status.ID),
-  - statusID: UUID (fk->driver.ID)
+  - statusID: ('pending' | 'submited' | 'started' | 'finished' | 'canceled')
   - from: string,
   - to: string,
   - date: Date,

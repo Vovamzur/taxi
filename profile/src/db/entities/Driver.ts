@@ -10,9 +10,9 @@ export class Driver {
   @PrimaryColumn()
   userID: number;
 
-  @OneToOne(() => Car, car => car.driver, { onDelete: 'CASCADE' })
+  @OneToOne(() => Car, car => car.id, { onDelete: 'CASCADE' })
   @JoinColumn()
-  car: Car;
+  carId: string;
 
   @Column({ default: 0, nullable: false })
   numberOfTrips: number;

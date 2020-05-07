@@ -23,6 +23,8 @@ process.on('unhandledRejection', logError);
 async function start() {
   try {
     dbConnection = await createConnection(dbConfig);
+    console.log('Connection to profile DB has been established successfully.');
+
     await dbConnection.runMigrations();
     httpServer.listen(port, () => {
       console.log(`Profile service start on port ${port}`);

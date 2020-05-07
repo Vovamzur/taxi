@@ -1,9 +1,12 @@
 import { expect } from 'chai';
 import { stub } from 'sinon'
 import request from 'supertest';
+import { getCustomRepository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 
+import app from './../app'
+import carRepository from './../db/repositories/car.repository';
 import * as authService from './../externalApi/authService';
-import { Car } from 'models';
 
 describe('Profile editing endpoints', () => {
 
@@ -11,15 +14,23 @@ describe('Profile editing endpoints', () => {
     const stubVerifyToken = stub(authService, 'verifyToken').resolves({ statusCode: 200 });
   });
 
+  beforeEach(() => {
+  })
+
+  afterEach(() => {
+  })
+
   describe('car endpoinds', () => {
-    let car: Car;
+    let id;
+    let car;
 
     before(() => {
-      car = { brand: 'brand', number: 'number', color: 'color', year: new Date() }
+      id = uuid()
+      car = { id, brand: 'brand', number: 'number', color: 'color', year: new Date() }
     });
 
     describe('GET /api/car/:id', () => {
-      it('should return car by id', () => {
+      it('should return car by id', async () => {
 
       });
 

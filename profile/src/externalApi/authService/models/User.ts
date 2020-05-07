@@ -10,11 +10,10 @@ export enum Role {
 };
 
 export type User = {
-  role?: Role;
-  username?: string;
-  password?: string;
-  fio?: string;
-  sex?: SexType;
-  age?: number;
+  role: Role;
+  username: string;
+  fio: string;
+  sex: SexType;
+  age: number;
   avatarUrl?: string;
 }

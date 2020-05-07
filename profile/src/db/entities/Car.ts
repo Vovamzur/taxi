@@ -18,6 +18,6 @@ export class Car {
   @Column({ type: 'date', nullable: true })
   year: Date;
 
-  @OneToOne(type => Driver, driver => driver.car)
-  driver: Driver;
+  @OneToOne(type => Driver, driver => driver.id)
+  driverID: string;
 }

@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 
 import driverRepository from './../../db/repositories/driver.repository';
 import * as authService from './../../externalApi/authService'
-import { FullDriver, Role } from './../../models';
+import { FullDriver, Role, Driver } from './../../models';
 
 type ServiceResult = Promise<FullDriver | void>
 
@@ -17,7 +17,7 @@ export const getDrivertById: GetDriverById = async (id, next) => {
   const { user, error } = await authService.getUserById(driver.userID);
   if (error) return next(error)
 
-  return { ...user, ...driver };
+  return user && { ...user, ...driver }; 
 }
 
 type CreateDriver = (driver: FullDriver, next: NextFunction) => ServiceResult
@@ -53,7 +53,7 @@ export const updateDriver: UpdateDriver = async (id, driver, next) => {
   const userForUpdating = { username, fio, sex, age, role: Role.DRIVER };
   const { updatedUser, error } = await authService.updateUserById(driver.userID, userForUpdating);
   if (error) return next(error)
-  const updatedFullDriver = { ...updatedUser, ...updatedDriver };
+  const updatedFullDriver = updatedUser && { ...updatedUser, ...updatedDriver };
 
   return updatedFullDriver;
 }

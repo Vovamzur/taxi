@@ -18,6 +18,8 @@ process.on('unhandledRejection', logError);
 async function start() {
   try {
     await prisma.connect();
+    console.log('Connection to auth DB has been established successfully.');
+
     httpServer.listen(port, () => {
       console.log(`Auth service start on port ${port}`);
     });
