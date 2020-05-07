@@ -34,7 +34,7 @@ export const updateCar: UpdateCar = async (id, car, next) => {
   const carRepo = getCustomRepository(carRepository)
   const dbCar = await carRepo.findOne({ where: { id } });
   if (!dbCar) {
-    return next({ status: 404, message: `There is no car with such id: ${id}`})
+    return next({ status: 404, message: `There is no car with such id: ${id}` })
   }
   await carRepo.update(id, car);
   const updatedCar = await carRepo.findOne({ where: { id } });

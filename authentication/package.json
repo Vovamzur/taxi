@@ -11,7 +11,13 @@
     "initdb": "prisma generate && prisma migrate save --experimental && prisma migrate up --experimental",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
-  "keywords": ["nodejs", "express", "typescript", "prisma", "jest"],
+  "keywords": [
+    "nodejs",
+    "express",
+    "typescript",
+    "prisma",
+    "jest"
+  ],
   "author": "Volodymt Mazur",
   "license": "ISC",
   "dependencies": {

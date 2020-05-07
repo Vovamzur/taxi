@@ -1,6 +1,5 @@
 import request from 'supertest';
 import { User } from '@prisma/client';
-import passport from 'passport';
 
 import app from '../app';
 import prisma from '../db';

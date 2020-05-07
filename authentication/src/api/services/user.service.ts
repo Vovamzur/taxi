@@ -26,6 +26,10 @@ export const updateUserByID: UpdateUserByID = async (id, data, next) => {
   if (userWithSuchUsername && userWithSuchUsername.id !== id) {
     return next({ status: 400, message: `Username ${username} is already taken` });
   }
+  const userFromDb = await prisma.user.findOne({ where: { id } });
+  if (!userFromDb) {
+    return next({ status: 400, message: `There is no user with such id ${id}` });
+  }
   const user = await prisma.user.update({ data, where: { id } });
   const { password: _, ...userToSend } = user;
 

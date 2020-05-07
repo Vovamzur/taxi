@@ -22,7 +22,7 @@ passport.use(
           await loginSchema.validate({ username, password }, { strict: true });
         } catch ({ errors }) {
           const message = `Invalid body: ${Object.values(errors).join('\n')}`;
-          return done({ message, status: 401 }, null);
+          return done({ message, status: 422 }, null);
         }
         const user = await prisma.user.findOne({ where: { username } });
         if (!user) {
@@ -49,7 +49,7 @@ passport.use(
         await loginSchema.validate(body, { strict: true });
       } catch ({ errors }) {
         const message = `Invalid body: ${Object.values(errors).join('\n')}`;
-        return done({ message, status: 401 }, null);
+        return done({ message, status: 422 }, null);
       }
       try {
         const userByUsername = await prisma.user.findOne({ where: { username } });

@@ -1,3 +1,32 @@
 ### Get driver profile by id 
-GET http://localhost:3002/api/profile/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NjE3NDMxLCJleHAiOjE1ODg3MDM4MzF9.MQ2RYw1do25yJKlS6HRIrd4aacsiLBko4eFRNNk0r08
+GET http://localhost:3002/api/profile/68ce9f5e-db4d-4ddb-b3dd-40e5159f9172
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NzE2NDgzLCJleHAiOjE1ODg4MDI4ODN9.n_Jw1OwAuLmLmCV1jdIrWRPe0R4SnENwzO-H7TauuDE
+
+### Create driver
+POST http://localhost:3002/api/profile/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NzE2NDgzLCJleHAiOjE1ODg4MDI4ODN9.n_Jw1OwAuLmLmCV1jdIrWRPe0R4SnENwzO-H7TauuDE
+
+{
+  "ASD": "ASD"
+}
+
+### update driver
+PUT http://localhost:3002/api/profile/68ce9f5e-db4d-4ddb-b3dd-40e5159f9172
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NzE2NDgzLCJleHAiOjE1ODg4MDI4ODN9.n_Jw1OwAuLmLmCV1jdIrWRPe0R4SnENwzO-H7TauuDE
+
+
+### Get car profile by id 
+GET http://localhost:3002/api/car/68ce9f5e-db4d-4ddb-b3dd-40e5159f9172
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NzE2NDgzLCJleHAiOjE1ODg4MDI4ODN9.n_Jw1OwAuLmLmCV1jdIrWRPe0R4SnENwzO-H7TauuDE
+
+### Create car
+POST http://localhost:3002/api/car/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NzE2NDgzLCJleHAiOjE1ODg4MDI4ODN9.n_Jw1OwAuLmLmCV1jdIrWRPe0R4SnENwzO-H7TauuDE
+
+### update car
+PUT http://localhost:3002/api/car/68ce9f5e-db4d-4ddb-b3dd-40e5159f9172
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NzE2NDgzLCJleHAiOjE1ODg4MDI4ODN9.n_Jw1OwAuLmLmCV1jdIrWRPe0R4SnENwzO-H7TauuDE
