@@ -1,6 +1,13 @@
 import React from 'react';
-import {Text} from 'react-native';
+import { Text, View } from 'react-native';
 
-const App = () => <Text>App</Text>;
+import Map from './Map';
+
+const App = () => (
+  <View>
+    <Text>Apasqwegfdgfdddp</Text>
+    <Map />
+  </View>
+);
 
 export default App;

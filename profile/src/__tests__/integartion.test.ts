@@ -1,15 +1,13 @@
 import { expect } from 'chai';
-import { stub } from 'sinon'
+import { stub, createSandbox } from 'sinon'
 import request from 'supertest';
-import { getCustomRepository } from 'typeorm';
+import typeorm from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import app from './../app'
-import carRepository from './../db/repositories/car.repository';
 import * as authService from './../externalApi/authService';
 
 describe('Profile editing endpoints', () => {
-
   before(() => {
     const stubVerifyToken = stub(authService, 'verifyToken').resolves({ statusCode: 200 });
   });
