@@ -4,11 +4,19 @@ export default (orm, DataTypes) => {
     {
       clientID: {
         allowNull: false,
-        type: DataTypes.INTEGER
+        type: DataTypes.UUID,
+        references: {
+          model: 'client',
+          key: 'id'
+        }
       },
       driverID: {
         allowNull: false,
-        type: DataTypes.STRING
+        type: DataTypes.UUID,
+        references: {
+          model: 'driver',
+          key: 'id'
+        }
       },
       status: {
         allowNull: false,

@@ -7,8 +7,6 @@ import app from './app';
 
 dotenv.config();
 
-global.variable = 'as';
-
 const port: number = process.env.PROFILE_PORT || 3000;
 const httpServer: Server = http.createServer(app);
 let dbConnection: Connection;

@@ -1,0 +1,56 @@
+{
+  "name": "web-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "classnames": "^2.2.6",
+    "connected-react-router": "^6.8.0",
+    "history": "^4.10.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-feedbacker": "^2.0.0",
+    "react-icons": "^3.10.0",
+    "react-redux": "^7.2.0",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "tailwindcss": "^1.4.6",
+    "typescript": "~3.7.2"
+  },
+  "scripts": {
+    "build:css": "postcss src/styles/tailwind.css -o src/generated/tailwind.output.css",
+    "watch:css": "postcss src/styles/tailwind.css -o src/generated/tailwind.output.css -w",
+    "scripts:start": "react-scripts start",
+    "scripts:build": "react-scripts build",
+    "start": "npm-run-all -p watch:css scripts:start",
+    "build": "npm-run-all build:css scripts:build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.10"
+  }
+}
