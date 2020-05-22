@@ -79,3 +79,14 @@ sendCoordinates variable (change when oder was submited and finished or canceled
 user, driver:
   - setInterval(() => refresh coordinates of driver in order.to direction, 1000) for 30 seconds
   - send to booking service refresh order status
+
+
+
+login
+
+register ar user
+register as driver
+
+common page -> role==='DRiver' ? car page : main page
+car page -> main page with menu
+

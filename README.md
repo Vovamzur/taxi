@@ -28,3 +28,5 @@
  - Passport.js
  - Yarn
  - Docker
+ - Knex
+ 
