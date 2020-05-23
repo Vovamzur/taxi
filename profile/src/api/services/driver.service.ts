@@ -23,8 +23,8 @@ export const getDrivertById: GetDriverById = async (id, next) => {
 type CreateDriver = (driver: FullDriver, next: NextFunction) => ServiceResult
 
 export const createDriver: CreateDriver = async (driver, next) => {
-  const { username, fio, sex, age, role = Role.DRIVER } = driver;
-  const userForUpdating = { username, fio, sex, age, role };
+  const { email, fio, sex, age, role = Role.DRIVER } = driver;
+  const userForUpdating = { email, fio, sex, age, role };
   const { updatedUser, error } = await authService.updateUserById(driver.userID, userForUpdating);
   if (error) return next(error)
   const newDriver = await getCustomRepository(driverRepository).save(driver);
@@ -49,8 +49,8 @@ export const updateDriver: UpdateDriver = async (id, driver, next) => {
   if (!updatedDriver) {
     return next({ status: 500, message: `can't update driver` });
   }
-  const { username, fio, sex, age } = driver;
-  const userForUpdating = { username, fio, sex, age, role: Role.DRIVER };
+  const { email, fio, sex, age } = driver;
+  const userForUpdating = { email, fio, sex, age, role: Role.DRIVER };
   const { updatedUser, error } = await authService.updateUserById(driver.userID, userForUpdating);
   if (error) return next(error)
   const updatedFullDriver = updatedUser && { ...updatedUser, ...updatedDriver };

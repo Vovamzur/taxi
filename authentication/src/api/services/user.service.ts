@@ -21,10 +21,10 @@ export const getUserById: GetUserById = async (id, next) => {
 type UpdateUserByID = (id: User['id'], data: User, next: NextFunction) => ServiceResult;
 
 export const updateUserByID: UpdateUserByID = async (id, data, next) => {
-  const { username } = data;
-  const userWithSuchUsername = await prisma.user.findOne({ where: { username } });
-  if (userWithSuchUsername && userWithSuchUsername.id !== id) {
-    return next({ status: 400, message: `Username ${username} is already taken` });
+  const { email } = data;
+  const userWithSuchEmail = await prisma.user.findOne({ where: { email } });
+  if (userWithSuchEmail && userWithSuchEmail.id !== id) {
+    return next({ status: 400, message: `Email ${email} is already taken` });
   }
   const userFromDb = await prisma.user.findOne({ where: { id } });
   if (!userFromDb) {

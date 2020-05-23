@@ -15,18 +15,18 @@ const options = {
 passport.use(
   'login',
   new LocalStrategy(
-    { usernameField: 'username', passwordField: 'password' },
-    async (username, password, done) => {
+    { usernameField: 'email', passwordField: 'password' },
+    async (email, password, done) => {
       try {
         try {
-          await loginSchema.validate({ username, password }, { strict: true });
+          await loginSchema.validate({ email, password }, { strict: true });
         } catch ({ errors }) {
           const message = `Invalid body: ${Object.values(errors).join('\n')}`;
           return done({ message, status: 422 }, null);
         }
-        const user = await prisma.user.findOne({ where: { username } });
+        const user = await prisma.user.findOne({ where: { email } });
         if (!user) {
-          return done({ status: 401, message: 'Incorrect username.' }, false);
+          return done({ status: 401, message: 'Incorrect email.' }, false);
         }
         const { password: userPassword, ...userToSend } = user;
 
@@ -43,8 +43,8 @@ passport.use(
 passport.use(
   'register',
   new LocalStrategy(
-    { usernameField: 'username', passReqToCallback: true },
-    async ({ body }, username, password, done) => {
+    { usernameField: 'email', passReqToCallback: true },
+    async ({ body }, email, password, done) => {
       try {
         await loginSchema.validate(body, { strict: true });
       } catch ({ errors }) {
@@ -52,11 +52,11 @@ passport.use(
         return done({ message, status: 422 }, null);
       }
       try {
-        const userByUsername = await prisma.user.findOne({ where: { username } });
-        if (userByUsername) {
-          return done({ status: 401, message: 'Username is already taken.' }, null);
+        const userByEmail = await prisma.user.findOne({ where: { email } });
+        if (userByEmail) {
+          return done({ status: 401, message: 'Email is already taken.' }, null);
         }
-        return done(null, { username, password });
+        return done(null, { email, password });
       } catch (err) {
         return done(err, null);
       }

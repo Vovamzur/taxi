@@ -21,7 +21,7 @@ enum SexType {
 model User {
   id        Int      @default(autoincrement()) @id
   role      Role     @default(CLIENT)
-  username  String   @unique
+  email  String   @unique
   password  String
   fio       String?
   sex       SexType?

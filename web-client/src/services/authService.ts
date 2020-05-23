@@ -1,6 +1,6 @@
 import callWebApi from '../helpers/webApiHelper';
-import { LoginCredentials, ClientRegisterCredentials} from '../types/auth.types';
-import { User } from '../types/user.type';
+import { LoginCredentials, RegisterCredentials } from '../types/auth.types';
+import { User } from '../types/user.types';
 
 const authUrl =process.env.AUTH_SERVICE_URL;
 
@@ -13,7 +13,7 @@ export const login = async (request: LoginCredentials) => {
   return response.json();
 };
 
-export const registrationDriver = async (request: ClientRegisterCredentials) => {
+export const registration = async (request: RegisterCredentials) => {
   const response = await callWebApi({
     endpoint: `${authUrl}/api/auth/registration`,
     type: 'POST',

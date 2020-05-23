@@ -11,7 +11,7 @@ export enum Role {
 
 export type User = {
   role: Role;
-  username: string;
+  email: string;
   fio: string;
   sex: SexType;
   age: number;

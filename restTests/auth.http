@@ -5,7 +5,7 @@ POST http://localhost:3001/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "Vova",
+  "email": "email@gmail.com",
   "password": "password"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:3001/api/auth/registration
 Content-Type: application/json
 
 {
-  "username": "Vova",
+  "email": "email@gmail.com",
   "password": "asd"
 }
 
@@ -37,6 +37,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg4NDM5OTg4LCJleHAiOjE1ODg1MjYzODh9.4DGPBuHmTIBZJ_-gb8a8r0pfGewS6bBewNshNCRRY7Q
 
 {
-  "username": "Vova",
+  "email": "email@gmail.com",
   "age": 12
 }

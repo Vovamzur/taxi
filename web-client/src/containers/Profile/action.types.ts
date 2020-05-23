@@ -1,4 +1,4 @@
-import { User } from '../../types/user.type';
+import { User } from '../../types/user.types';
 import { Thunky } from '../../store/types';
 
 export const SET_USER = 'PROFILE_ACTION:SET_USER';

@@ -1,7 +1,7 @@
 user:
   - ID: UUID unique (pk),
   - role: ('driver' | 'client' | 'admin')
-  - username: string unique,
+  - email: string unique,
   - password: string
   - fio?: string,
   - sex?: 'male' | 'female',
@@ -90,3 +90,8 @@ register as driver
 common page -> role==='DRiver' ? car page : main page
 car page -> main page with menu
 
+
+finish login and registration
+implement main page (search bar, map and burger menu)
+implement profile editing
+implement location moving

@@ -7,7 +7,7 @@ export default (orm, DataTypes) => {
         type: DataTypes.ENUM('CLIENT', 'DRIVER', 'ADMIN'),
         default: 'CLIENT'
       },
-      username: {
+      email: {
         allowNull: false,
         type: DataTypes.STRING,
         unique: true

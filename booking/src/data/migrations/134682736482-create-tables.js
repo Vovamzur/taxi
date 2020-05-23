@@ -18,7 +18,7 @@ export default {
                 type: Sequelize.ENUM('CLIENT', 'DRIVER', 'ADMIN'),
                 default: 'CLIENT'
               },
-              username: {
+              email: {
                 allowNull: false,
                 type: Sequelize.STRING,
                 unique: true

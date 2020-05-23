@@ -2,9 +2,9 @@ import * as yup from 'yup';
 
 export default yup.object().shape({
   id: yup.number(),
-  username: yup.string().ensure(),
+  email: yup.string().ensure(),
   role: yup.string().ensure().oneOf(['CLIENT', 'DRIVER', 'ADMIN']),
   sex: yup.string().oneOf(['MALE', 'FEMALE']),
-  fio: yup.string(),
+  fio: yup.string().ensure(),
   age: yup.number(),
 });

@@ -11,7 +11,7 @@ describe('Auth endpoints', () => {
 
   beforeAll(() => {
     user = {
-      id: 1, role: 'CLIENT', username: 'username', password: 'password',
+      id: 1, role: 'CLIENT', email: 'email', password: 'password',
       fio: 'fio', sex: 'FEMALE', age: 11, avatarUrl: 'avatar',
     };
   });
@@ -39,17 +39,17 @@ describe('Auth endpoints', () => {
       expect(body).toHaveProperty('token');
     });
 
-    it('should return `Incorrect Username.` error', async () => {
+    it('should return `Incorrect Email.` error', async () => {
       prisma.user.findOne = jest.fn().mockResolvedValue(null);
-      const userwithIncorrectUsername = { ...user, username: 'u' };
+      const userwithIncorrectEmail = { ...user, email: 'u' };
 
       const response = await request(app)
         .post('/api/auth/login')
-        .send(userwithIncorrectUsername);
+        .send(userwithIncorrectEmail);
       const { status, body } = response;
 
       expect(status).toEqual(401);
-      expect(body.message).toEqual('Incorrect username.');
+      expect(body.message).toEqual('Incorrect email.');
     });
 
     it('should return `Wrong Password.` error', async () => {
@@ -66,14 +66,14 @@ describe('Auth endpoints', () => {
   });
 
   describe('POST /api/auth/registration', () => {
-    it('should return `Username is already taken.` error', async () => {
+    it('should return `Email is already taken.` error', async () => {
       const response = await request(app)
         .post('/api/auth/registration')
         .send(user);
       const { status, body } = response;
 
       expect(status).toEqual(401);
-      expect(body.message).toEqual('Username is already taken.');
+      expect(body.message).toEqual('Email is already taken.');
     });
 
     it('should register', async () => {
@@ -151,7 +151,7 @@ describe('Auth endpoints', () => {
       expect(status).toEqual(200);
       expect(body).toHaveProperty('id');
       expect(body).toHaveProperty('role');
-      expect(body).toHaveProperty('username');
+      expect(body).toHaveProperty('email');
       expect(body).toHaveProperty('fio');
       expect(body).toHaveProperty('sex');
       expect(body).toHaveProperty('age');
