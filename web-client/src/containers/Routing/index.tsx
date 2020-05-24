@@ -9,6 +9,7 @@ import GuestRoute from 'containers/GuestRoute';
 import LoginPage from 'containers/Auth/Login'
 import RegistrationPage from 'containers/Auth/Registration';
 import MainPage from 'containers/MainPage';
+import CarPage from 'containers/CarPage';
 
 import Spinner from 'components/Spinner';
 import Header from 'components/Header';
@@ -28,33 +29,31 @@ const Routing = () => {
   }, [dispatch]);
 
   if (isLoading || (token && !isAuthorized)) {
-    debugger
     return <Spinner />;
   };
 
   return (
-    <div className='flex h-screen h-full font-sans font-medium'>
-      <Switch>
-        <GuestRoute exact path='/login' component={LoginPage} />
-        <GuestRoute exact path='/registration' component={RegistrationPage} />
-        <Route exact path='/404' component={NotFound} />
+    <Switch>
+      <GuestRoute exact path='/login' component={LoginPage} />
+      <GuestRoute exact path='/registration' component={RegistrationPage} />
+      <Route exact path='/404' component={NotFound} />
 
-        <PrivateRoute path='/'>
-          <div>
-            <Header username={user ? user.email : ''} />
-            <main>
-              <Switch>
-                <Route path='/' component={MainPage} />
+      <PrivateRoute path='/'>
+        <div>
+          <Header username={user ? user.email : ''} />
+          <main>
+            <Switch>
+              <Route path='/' component={MainPage} />
+              <Route path='/' component={CarPage} />
 
-                <Route render={() => <Redirect to='/404' />} />
-              </Switch>
-            </main>
-          </div>
-        </PrivateRoute>
+              <Route render={() => <Redirect to='/404' />} />
+            </Switch>
+          </main>
+        </div>
+      </PrivateRoute>
 
-        <Route render={() => <Redirect to='/404' />} />
-      </Switch>
-    </div>
+      <Route render={() => <Redirect to='/404' />} />
+    </Switch>
   )
 };
 

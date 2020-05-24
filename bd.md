@@ -12,7 +12,7 @@ car:
   - ID: UUID unique,
   - brand: string,
   - number: string,
-  - year?: Date,
+  - year?: number,
   - color?: string, 
 
 driver:

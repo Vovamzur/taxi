@@ -4,6 +4,6 @@ export default yup.object().shape({
   brand: yup.string().ensure(),
   number: yup.string().ensure(),
   color: yup.string().ensure(),
-  year: yup.date(),
+  year: yup.number(),
   driverId: yup.string().ensure(),
 });

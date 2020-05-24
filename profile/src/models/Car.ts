@@ -5,5 +5,5 @@ export type Car = {
   brand: string;
   number: string;
   color: string;
-  year: Date;
+  year: number;
 }

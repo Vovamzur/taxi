@@ -1,12 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Form } from 'semantic-ui-react'
+import { Grid, Header, Message, Segment, Form, Button } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 
 import { registration } from '../../Profile/actions';
 import useValidation from '../useValidation';
 import { Role, Sex } from 'types/user.types';
-
-import styles from '../styles.module.scss';
 
 const RegistrationPage = () => {
   const dispatch = useDispatch();
@@ -20,18 +19,21 @@ const RegistrationPage = () => {
     age,
     isEmailValid,
     isPasswordValid,
+    isConfirmPasswordValid,
     isRoleValid,
     isFioValid,
     isSexValid,
     isAgeValid,
     emailChanged,
     passwordChanged,
+    confirmPasswordChanged,
     roleChanged,
     fioChanged,
     sexChanged,
     ageChanged,
     validateEmail,
     validatePassword,
+    validateConfirmPassword,
     validateRole,
     validateFio,
     validateSex,
@@ -44,6 +46,7 @@ const RegistrationPage = () => {
     const isValid = [
       validateEmail(),
       validatePassword(),
+      validateConfirmPassword(),
       validateFio(),
       validateRole(),
       validateSex(),
@@ -55,92 +58,109 @@ const RegistrationPage = () => {
     dispatch(registration({ email, password, role, fio, sex, age }));
   };
 
-  let [emailClass, passwordClass] = [[], []].map(
-    () =>
-      'shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline',
-  );
-    
   return (
-    <div className="ui middle aligned center aligned grid">
-      <div className="column">
-        <h2 className="ui teal image header">
-          <div className="content">
-            Registration
-          </div>
-        </h2>
-        <form className="ui large form" onSubmit={handleRegistration} noValidate>
-          <div className="ui stacked segment">
-            <div className="field">
-              <div className="ui left icon input">
-                <i className="user icon" />
-                <input
-                  className={isEmailValid ? emailClass : (emailClass += ` ${styles.error}`)}
-                  type="text"
-                  name="email"
-                  placeholder="Login"
-                  value={email}
-                  onChange={e => emailChanged(e.target.value)}
-                  onBlur={validatePassword}
-                />
-              </div>
-            </div>
-            <div className="field">
-              <div className="ui left icon input">
-                <i className="lock icon"></i>
-                <input
-                  className={
-                    isPasswordValid ? passwordClass : (passwordClass += ` ${styles.error}`)
-                  }
-                  type="password"
-                  name="password"
-                  placeholder="********"
-                  value={password}
-                  onChange={(ev) => passwordChanged(ev.target.value)}
-                  onBlur={validatePassword}
-                />
-              </div>
-            </div>
-            <Form.Group>
-              <label>Who are you?</label>>
+    <Grid textAlign="center" verticalAlign="middle" className="fill">
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <div style={{ marginTop: '200px' }} />
+        <Header as="h2" color="teal" textAlign="center">
+          Register for free account
+      </Header>
+        <Form name="registrationForm" size="large" onSubmit={handleRegistration}>
+          <Segment>
+            <Form.Group style={{ marginLeft: '25%' }}>
               <Form.Radio
+                error={!isRoleValid}
                 label='Driver'
                 value={Role.DRIVER}
                 checked={role === Role.DRIVER}
                 onChange={(_, { value }) => value && roleChanged(value as Role)}
               />
               <Form.Radio
+                error={!isRoleValid}
                 label='Client'
                 value={Role.CLIENT}
                 checked={role === Role.CLIENT}
-                onChange={(_ , { value }) => value && roleChanged(value as Role)}
+                onChange={(_, { value }) => value && roleChanged(value as Role)}
               />
             </Form.Group>
-            <Form.Group inline>
-              <label>Who are you?</label>>
+            <Form.Group style={{ marginLeft: '25%' }}>
               <Form.Radio
+                error={!isSexValid}
                 label='Male'
                 value={Sex.MALE}
                 checked={sex === Sex.MALE}
                 onChange={(_, { value }) => value && sexChanged(value as Sex)}
               />
               <Form.Radio
+                error={!isSexValid}
                 label='Female'
                 value={Sex.FEMALE}
                 checked={sex === Sex.FEMALE}
-                onChange={(_ , { value }) => value && sexChanged(value as Sex)}
+                onChange={(_, { value }) => value && sexChanged(value as Sex)}
               />
             </Form.Group>
-            <button
-              type='submit'
-              className="ui fluid large teal submit button"
-            >
+            <Form.Input
+              fluid
+              icon="at"
+              iconPosition="left"
+              placeholder="Email"
+              type="email"
+              error={!isEmailValid}
+              onChange={ev => emailChanged(ev.target.value)}
+              onBlur={validateEmail}
+            />
+            <Form.Input
+              fluid
+              icon="address card"
+              iconPosition="left"
+              placeholder="Full FIO"
+              type="text"
+              error={!isFioValid}
+              onChange={ev => fioChanged(ev.target.value)}
+              onBlur={validateFio}
+            />
+            <Form.Input
+              fluid
+              icon="address card"
+              iconPosition="left"
+              placeholder="Your age"
+              type="number"
+              error={!isAgeValid}
+              onChange={ev => ageChanged(Number(ev.target.value))}
+              onBlur={validateAge}
+            />
+            <Form.Input
+              fluid
+              icon="lock"
+              iconPosition="left"
+              placeholder="Password"
+              type="password"
+              error={!isPasswordValid}
+              onChange={ev => passwordChanged(ev.target.value)}
+              onBlur={validatePassword}
+            />
+            <Form.Input
+              fluid
+              icon="lock"
+              iconPosition="left"
+              placeholder="Confrim password"
+              type="password"
+              error={!isConfirmPasswordValid}
+              onChange={ev => confirmPasswordChanged(ev.target.value)}
+              onBlur={validateConfirmPassword}
+            />
+            <Button type="submit" color="teal" fluid size="large" primary>
               Register
-            </button>
-          </div>
-          <div className="ui error message" />
-        </form>
-      </div>
-    </div>
+            </Button>
+          </Segment>
+        </Form>
+        <Message>
+          Alredy with us?
+        {' '}
+          <NavLink exact to="/login">Sign In</NavLink>
+        </Message>
+      </Grid.Column>
+    </Grid>
   )
 }
 

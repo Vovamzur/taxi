@@ -1,21 +1,19 @@
 import callWebApi from '../helpers/webApiHelper';
-import { LoginCredentials, RegisterCredentials } from '../types/auth.types';
+import { LoginCredentials, RegisterCredentials, LoginResponse } from '../types/auth.types';
 import { User } from '../types/user.types';
 
-const authUrl =process.env.AUTH_SERVICE_URL;
-
-export const login = async (request: LoginCredentials) => {
+export const login = async (request: LoginCredentials): Promise<LoginResponse> => {
   const response = await callWebApi({
-    endpoint: `${authUrl}/api/auth/login`,
+    endpoint: `/api/auth/login`,
     type: 'POST',
     request,
   });
   return response.json();
 };
 
-export const registration = async (request: RegisterCredentials) => {
+export const registration = async (request: RegisterCredentials): Promise<LoginResponse> => {
   const response = await callWebApi({
-    endpoint: `${authUrl}/api/auth/registration`,
+    endpoint: `/api/auth/registration`,
     type: 'POST',
     request,
   });
@@ -25,7 +23,7 @@ export const registration = async (request: RegisterCredentials) => {
 export const getCurrentUser = async (): Promise<User | null> => {
   try {
     const response = await callWebApi({
-      endpoint: `${authUrl}/api/auth/user`,
+      endpoint: `/api/auth/user`,
       type: 'GET',
     });
     return response.json();

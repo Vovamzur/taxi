@@ -1,7 +1,8 @@
-import jsonwebtoken from 'jsonwebtoken';
-import { secret, expiresIn } from '../config/jwt.config';
-import { User } from '@prisma/client';
 import { promisify } from 'util';
+import jsonwebtoken from 'jsonwebtoken';
+
+import { secret, expiresIn } from '../config/jwt.config';
+import { User } from '../types/user.type';
 
 const promisifyTokenVerify = promisify(jsonwebtoken.verify);
 

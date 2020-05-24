@@ -14,8 +14,12 @@ POST http://localhost:3001/api/auth/registration
 Content-Type: application/json
 
 {
-  "email": "email@gmail.com",
-  "password": "asd"
+  "email": "email1@gmail.com",
+  "password": "password",
+  "fio": "asdasdasd",
+  "age": 20,
+  "role": "CLIENT",
+  "sex": "MALE"
 }
 
 ### Verify token

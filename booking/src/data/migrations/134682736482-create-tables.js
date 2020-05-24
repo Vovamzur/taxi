@@ -67,7 +67,7 @@ export default {
               },
               year: {
                 allowNull: true,
-                type: Sequelize.DATE
+                type: Sequelize.INTEGER
               }
             },
             { transaction }

@@ -24,7 +24,7 @@ describe('Profile editing endpoints', () => {
 
     before(() => {
       id = uuid()
-      car = { id, brand: 'brand', number: 'number', color: 'color', year: new Date() }
+      car = { id, brand: 'brand', number: 'number', color: 'color', year: 2001 }
     });
 
     describe('GET /api/car/:id', () => {

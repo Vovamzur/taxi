@@ -12,6 +12,7 @@ export const getUserById: RequestHandler = async (req, res, next) => {
 export const updateUser: RequestHandler = async (req, res, next) => {
   try {
     await userSchema.validate(req.body, { strict: true });
+    next();
   } catch ({ errors }) {
     const message = `Invalid body: ${Object.values(errors).join('\n')}`;
     return next({ message, status: 422 });

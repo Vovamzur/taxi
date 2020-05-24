@@ -1,0 +1,21 @@
+export enum Role {
+  CLIENT = 'CLIENT',
+  DRIVER = 'DRIVER',
+  ADMIN = 'ADMIN',
+}
+
+export enum Sex {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+}
+
+export type User = {
+  id: number,
+  role: Role,
+  email: string,
+  password: string,
+  fio: string,
+  sex: Sex,
+  age: number,
+  avatarUrl?: string,
+};

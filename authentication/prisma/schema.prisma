@@ -1,30 +1,91 @@
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://postgres:password@localhost:5432/authService?schema=public"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-enum Role {
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:password@localhost:5432/bookingService?schema=public"
+}
+
+model cars {
+  brand   String
+  id      String    @default(dbgenerated()) @id
+  number  String
+  year    DateTime?
+  drivers drivers[]
+}
+
+model coordinates {
+  id                              String   @default(dbgenerated()) @id
+  latitude                        Float
+  longitude                       Float
+  userId                          String?
+  users                           users?   @relation(fields: [userId], references: [id])
+  orders_coordinatesToorders_from orders[] @relation("coordinatesToorders_from")
+  orders_coordinatesToorders_to   orders[] @relation("coordinatesToorders_to")
+}
+
+model drivers {
+  carId         String?
+  id            String   @default(dbgenerated()) @id
+  mark          Float?
+  numberOfTrips Int      @default(0)
+  userId        String?
+  cars          cars?    @relation(fields: [carId], references: [id])
+  users         users?   @relation(fields: [userId], references: [id])
+  orders        orders[]
+}
+
+model orders {
+  clientId                             String?
+  createdAt                            DateTime?
+  date                                 DateTime
+  driverId                             String?
+  from                                 String?
+  id                                   String             @default(dbgenerated()) @id
+  price                                Float?
+  status                               enum_orders_status
+  to                                   String?
+  updatedAt                            DateTime?
+  users                                users?             @relation(fields: [clientId], references: [id])
+  drivers                              drivers?           @relation(fields: [driverId], references: [id])
+  coordinates_coordinatesToorders_from coordinates?       @relation("coordinatesToorders_from", fields: [from], references: [id])
+  coordinates_coordinatesToorders_to   coordinates?       @relation("coordinatesToorders_to", fields: [to], references: [id])
+}
+
+model SequelizeMeta {
+  name String @id
+}
+
+model users {
+  age         Int?
+  avatarUrl   String?
+  fio         String?
+  id          String          @default(dbgenerated()) @id
+  password    String
+  role        enum_users_role
+  sex         enum_users_sex?
+  username    String          @unique
+  coordinates coordinates[]
+  drivers     drivers[]
+  orders      orders[]
+}
+
+enum enum_orders_status {
+  canceled
+  finished
+  pending
+  started
+  submited
+}
+
+enum enum_users_role {
+  ADMIN
   CLIENT
   DRIVER
-  ADMIN
 }
 
-enum SexType {
-  MALE
+enum enum_users_sex {
   FEMALE
-}
-
-model User {
-  id        Int      @default(autoincrement()) @id
-  role      Role     @default(CLIENT)
-  email  String   @unique
-  password  String
-  fio       String?
-  sex       SexType?
-  age       Int?
-  avatarUrl String?
+  MALE
 }

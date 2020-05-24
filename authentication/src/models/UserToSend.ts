@@ -1,11 +1,11 @@
-import { Role, SexType } from '@prisma/client';
+import { Role, Sex } from '../types/user.type';
 
 export type UserToSend = {
   id: number;
   role: Role;
   email: string;
   fio?: string | null;
-  sex?: SexType | null;
+  sex?: Sex | null;
   age?: number | null;
   avatarUrl?: string | null;
 };

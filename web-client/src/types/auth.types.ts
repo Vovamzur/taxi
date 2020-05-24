@@ -1,4 +1,5 @@
-import { Sex, Role } from './user.types';
+import { Sex, Role, User } from './user.types';
+import { Driver } from './profile.types';
 
 export type LoginCredentials = {
   email: string;
@@ -13,4 +14,10 @@ export type RegisterCredentials = {
   age: number,
   password: string;
   avatarUrl?: string
+};
+
+export type LoginResponse = {
+  user: User;
+  token: string;
+  driver?: Driver;
 };

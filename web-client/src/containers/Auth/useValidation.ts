@@ -6,12 +6,14 @@ import { Role, Sex } from '../../types/user.types';
 const useValidation = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfrimPassword] = useState<string>('');
   const [role, setRole] = useState<Role>(Role.CLIENT);
   const [fio, setFio] = useState<string>('');
   const [sex, setSex] = useState<Sex>(Sex.MALE);
   const [age, setAge] = useState<number>(0);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [isPasswordValid, setIsPasswordlValid] = useState<boolean>(true);
+  const [isConfirmPasswordValid, setIsConfrimPasswordValid] = useState<boolean>(true);
   const [isRoleValid, setIsRoleValid] = useState<boolean>(true);
   const [isFioValid, setIsFioValid] = useState<boolean>(true);
   const [isSexValid, setIsSexValid] = useState<boolean>(true);
@@ -26,6 +28,11 @@ const useValidation = () => {
     setPassword(password);
     setIsPasswordlValid(true);
   };
+
+  const confirmPasswordChanged = (confirmPassword: string) => {
+    setConfrimPassword(confirmPassword);
+    setIsConfrimPasswordValid(true);
+  }
 
   const roleChanged = (role: Role) => {
     setRole(role);
@@ -65,6 +72,13 @@ const useValidation = () => {
     return isRoleValid;
   };
 
+  const validateConfirmPassword = () => {
+    const isConfirmPasswordValid = validatePassword() &&
+      validator.isByteLength(confirmPassword, { min: 8, max: undefined });
+    setIsConfrimPasswordValid(isConfirmPasswordValid);
+    return isConfirmPasswordValid;
+  }
+
   const validateFio = () => {
     const isFioValid = validator.isByteLength(fio, { min: 8, max: undefined });
     setIsFioValid(isFioValid);
@@ -78,7 +92,7 @@ const useValidation = () => {
   };
 
   const validateAge = () => {
-    const isAgeValid = validator.isInt(fio, { min: 18, max: undefined });
+    const isAgeValid = age >= 18 && age <= 90;
     setIsAgeValid(isAgeValid);
     return isAgeValid;
   };
@@ -86,24 +100,28 @@ const useValidation = () => {
   return {
     email,
     password,
+    confirmPassword,
     role,
     fio,
     sex,
     age,
     isEmailValid,
     isPasswordValid,
+    isConfirmPasswordValid,
     isRoleValid,
     isFioValid,
     isSexValid,
     isAgeValid,
     emailChanged,
     passwordChanged,
+    confirmPasswordChanged,
     roleChanged,
     fioChanged,
     sexChanged,
     ageChanged,
     validateEmail,
     validatePassword,
+    validateConfirmPassword,
     validateRole,
     validateFio,
     validateSex,

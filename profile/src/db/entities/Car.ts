@@ -16,7 +16,7 @@ export class Car {
   color: string;
 
   @Column({ type: 'date', nullable: true })
-  year: Date;
+  year: number;
 
   @OneToOne(type => Driver, driver => driver.id)
   driverID: string;

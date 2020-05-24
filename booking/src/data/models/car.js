@@ -12,7 +12,7 @@ export default (orm, DataTypes) => {
       },
       year: {
         allowNull: true,
-        type: DataTypes.DATE
+        type: DataTypes.INTEGER
       }
     },
     {},

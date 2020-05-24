@@ -2,10 +2,11 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
-import prisma from './../db';
+import knexConnection from './../db/knexConnection';
 import cryptoHelper from '../helpers/crypto.helper';
 import loginSchema from './../validations/login.schema';
 import { secret } from './../config/jwt.config';
+import { User } from '../types/user.type';
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -18,13 +19,7 @@ passport.use(
     { usernameField: 'email', passwordField: 'password' },
     async (email, password, done) => {
       try {
-        try {
-          await loginSchema.validate({ email, password }, { strict: true });
-        } catch ({ errors }) {
-          const message = `Invalid body: ${Object.values(errors).join('\n')}`;
-          return done({ message, status: 422 }, null);
-        }
-        const user = await prisma.user.findOne({ where: { email } });
+        const user = await knexConnection<User>('users').where('email', '=', email).first();
         if (!user) {
           return done({ status: 401, message: 'Incorrect email.' }, false);
         }
@@ -46,17 +41,11 @@ passport.use(
     { usernameField: 'email', passReqToCallback: true },
     async ({ body }, email, password, done) => {
       try {
-        await loginSchema.validate(body, { strict: true });
-      } catch ({ errors }) {
-        const message = `Invalid body: ${Object.values(errors).join('\n')}`;
-        return done({ message, status: 422 }, null);
-      }
-      try {
-        const userByEmail = await prisma.user.findOne({ where: { email } });
+        const userByEmail = await knexConnection<User>('users').where('email', '=', email).first();
         if (userByEmail) {
           return done({ status: 401, message: 'Email is already taken.' }, null);
         }
-        return done(null, { email, password });
+        return done(null, body);
       } catch (err) {
         return done(err, null);
       }
@@ -67,7 +56,7 @@ passport.use(
 passport.use(
   new JwtStrategy(options, async ({ id }, done) => {
     try {
-      const user = await prisma.user.findOne({ where: { id } });
+      const user = await knexConnection<User>('users').where('id', '=', id).first();
       return user
         ? done(null, user)
         : done({ status: 401, message: 'Token is invalid.' }, null);
