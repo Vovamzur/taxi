@@ -6,14 +6,17 @@ import store, { history } from 'store';
 
 import Routing from 'containers/Routing';
 import { Feedbacker } from 'components/Feedbacker';
+import ErrorBoundary from 'components/ErrorBoundary';
 
-const Home = () => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Feedbacker />
-      <Routing />
-    </ConnectedRouter>
-  </Provider>
+const Home: React.FC = () => (
+  <ErrorBoundary>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <Feedbacker />
+        <Routing />
+      </ConnectedRouter>
+    </Provider>
+  </ErrorBoundary>
 );
 
 export default Home;

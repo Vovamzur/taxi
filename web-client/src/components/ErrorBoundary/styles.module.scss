@@ -1,0 +1,86 @@
+// colors
+$black: #000;
+$white: #fff;
+$orange: #fb8700;
+$orange-light: #ffab07;
+
+$background-gray: rgba(245, 245, 245, 1);
+$button-background: #ff6501;
+
+$button-publish-color: rgba(12, 81, 146, 0.5);
+$button-shadow-color: rgba($orange-light, 0.4);
+
+$text-base-color: #122737;
+$text-secondary-color: rgba($text-base-color, 0.5);
+
+$border-color: rgba($black, 0.11);
+$border-focus-color: rgba($black, 0.4);
+
+$input-shadow-color: rgba($black, 0.04);
+$input-placeholder-color: rgba($black, 0.3);
+
+// font
+$base-font-family: 'Inter', sans-serif;
+
+$header-large: 36px;
+$header-medium: 18px;
+
+$post-font-size: 16px;
+$form-font-size: 16px;
+$menu-font-size: 14px;
+$base-font-size: 12px;
+$message-font-size: 10px;
+$secondary-info-font-size: 9px;
+
+$header-letter-spacing: 0.9px;
+$input-letter-spacing: 0.5px;
+$base-letter-spacing: 0.4px;
+
+.error-container {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.error-main {
+	width: 60vw;
+	height: 45vh;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	background-color: $background-gray;
+	padding: 35px 40px;
+	border-radius: 3px;
+	border: 1px solid $border-color;
+	box-shadow: 2px 1px 8px $border-focus-color;
+}
+
+.error-title {
+	font-family: $base-font-family;
+	font-size: 40px;
+	line-height: 1.4;
+	letter-spacing: $header-letter-spacing;
+	color: $text-base-color;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.error-description {
+	font-family: $base-font-family;
+	font-size: $header-medium;
+	letter-spacing: $header-letter-spacing;
+	color: $text-base-color;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.error-details {
+	margin-right: auto;
+	font-family: $base-font-family;
+	font-size: $header-medium;
+	letter-spacing: $header-letter-spacing;
+	color: $text-base-color;
+	white-space: pre-wrap;
+}
