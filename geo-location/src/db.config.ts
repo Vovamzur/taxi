@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export const client: string = process.env.DB_DIALECT;
 export const connection: object = {
   host: process.env.DB_HOST,

@@ -18,26 +18,15 @@ import Header from 'components/Header';
 import NotFound from 'scenes/NotFound';
 
 import { RootState } from 'store/types';
-import { Role } from 'types/user.types';
-
-import { history } from 'store'
 
 const Routing = () => {
   const dispatch = useDispatch();
-  const {
-    isLoading, user, isAuthorized, driver
-  } = useSelector((state: RootState) => state.profile);
   const token = localStorage.getItem('token');
+  const { isLoading, user, isAuthorized } = useSelector((state: RootState) => state.profile);
 
   useEffect(() => {
     dispatch(loadCurrentUser());
   }, [dispatch, token]);
-
-  useEffect(() => {
-    if (user !== null && user.role === Role.DRIVER && (!driver || !driver.car)) {
-      history.push('/car')
-    }
-  }, [user, driver]);
 
   if (isLoading || (token && !isAuthorized)) {
     return <Spinner />;

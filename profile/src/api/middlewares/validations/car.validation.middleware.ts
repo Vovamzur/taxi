@@ -29,6 +29,7 @@ export const postCar: RequestHandler = async (req, res, next) => {
   return next();
 };
 
-export const updateCar: RequestHandler = async (req, res, next) => {
-  return getByID(req, res, next) && postCar(req, res, next);
+export const updateCar: RequestHandler = (req, res, next) => {
+  next()
+  // return getByID(req, res, next) && postCar(req, res, next);
 }

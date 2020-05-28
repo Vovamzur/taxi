@@ -4,7 +4,7 @@ import { Grid, Header, Message, Segment, Form, Button } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom';
 
 import { login } from '../../Profile/actions';
-import useValidation from '../useValidation';
+import { useValidation } from '../useValidation';
 
 const LoginPage = () => {
   const dispatch = useDispatch();

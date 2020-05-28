@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import { RootState } from 'store/types';
-import { Role } from 'types/user.types';
 import { Grid } from 'semantic-ui-react';
 
+import Map from './../Map';
+import { RootState } from 'store/types';
+import { Role } from 'types/user.types';
 
 const MainPage = () => {
   const { user, driver } = useSelector((state: RootState) => state.profile);

@@ -29,6 +29,7 @@ export const postDriver: RequestHandler = async (req, res, next) => {
   return next();
 };
 
-export const updateDriver: RequestHandler = async (req, res, next) => {
-  return getByID(req, res, next) && postDriver(req, res, next);
+export const updateDriver: RequestHandler = (req, res, next) => {
+  next()
+  // return getByID(req, res, next) && postDriver(req, res, next);
 };

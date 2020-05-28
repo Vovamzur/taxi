@@ -3,14 +3,13 @@ import http, { Server } from 'http';
 import express, { Application } from 'express';
 import socketIO from 'socket.io';
 
-import dbConnection from './dbConnection';
-import { UpdateCoordinates } from './coordinates.type';
+import knexConnection from './dbConnection';
+import { UpdateCoordinates, Coordinate } from './coordinates.type';
 
 const app: Application = express();
 const port: number = process.env.GEO_LOCATION_PORT;
 const httpServer: Server = http.createServer(app);
 const io: SocketIO.Server = socketIO(httpServer);
-const coordinatesTable = dbConnection('coordinates')
 
 start();
 
@@ -21,23 +20,41 @@ process.on('unhandledRejection', logError);
 
 async function start () {
   try {
-    await dbConnection.raw('select 1+1 as result');
+    await knexConnection.raw('select 1+1 as result');
     console.log('Connection to auth DB has been established successfully.');
 
     io.on('connection', (socket: SocketIO.Socket) => {
-      socket.on('updateUserPosition', async ({ userId, position }: UpdateCoordinates) => {
+      socket.on('updatePosition', async ({ userId, position }: UpdateCoordinates) => {
+        console.log('update position: ' + userId)
         const { longitude, latitude } = position
-        const userCoordinatesId = await coordinatesTable
-          .where('userId', '=', userId)
-          .select('id');
-        if (userCoordinatesId) {
-          await coordinatesTable.where('id', '=', userCoordinatesId).update({
-            longitude,
-            latitude
-          })
+        const row: Coordinate = {
+          longitude,
+          latitude,
+          userId,
+          isActive: true
         }
-        await coordinatesTable.insert({ userId, longitude, latitude })
-      })
+        const userCoordinates = await knexConnection<Coordinate>('coordinates')
+          .where('userId', '=', userId)
+          .first();
+        userCoordinates
+          ? await knexConnection<Coordinate>('coordinates')
+              .where('id', '=', userCoordinates.id)
+              .update(row)
+          : await knexConnection<Coordinate>('coordinates').insert(row)
+      });
+
+      socket.on('leave', async (userId: string) => {
+        console.log('leave: ' + userId)
+        const userCoordinates = await knexConnection<Coordinate>('coordinates')
+          .where('userId', '=', userId)
+          .first();
+        
+        if (!userCoordinates) return
+
+        await knexConnection<Coordinate>('coordinates')
+          .where('id', '=', userCoordinates.id)
+          .update({ ...userCoordinates, isActive: false });
+      });
     });
     
     httpServer.listen(port, () => {

@@ -17,6 +17,11 @@ export default (orm, DataTypes) => {
       latitude: {
         allowNull: false,
         type: DataTypes.FLOAT
+      },
+      isActive: {
+        alloadNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
       }
     },
     {},

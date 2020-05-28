@@ -10,6 +10,7 @@ export enum Role {
 };
 
 export type User = {
+  id: string;
   role: Role;
   email: string;
   fio: string;

@@ -8,3 +8,8 @@ export type UpdateCoordinates = {
   position: Position;
 };
 
+export type Coordinate = Position & {
+  id?: string;
+  userId: string;
+  isActive: boolean;
+};

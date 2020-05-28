@@ -3,7 +3,7 @@ import validator from 'validator';
 
 import { Role, Sex } from '../../types/user.types';
 
-const useValidation = () => {
+export const useValidation = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfrimPassword] = useState<string>('');
@@ -128,5 +128,3 @@ const useValidation = () => {
     validateAge,
   };
 };
-
-export default useValidation;

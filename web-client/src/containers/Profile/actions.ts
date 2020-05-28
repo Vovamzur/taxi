@@ -83,11 +83,11 @@ export const loadCurrentUser = (soft = false): AsyncUserAction => async (dispatc
     const user = await authService.getCurrentUser();
     dispatch(setUser(user));
     if (user!.driver) {
+      dispatch(setDriver(user!.driver))
       if (user!.driver.carId) {
         const car = await profileService.getCarById(user!.driver.carId);
         dispatch(setCar(car))
       }
-      dispatch(setDriver(user!.driver))
     }
   } catch (err) {
     dispatch(setUser(null));
@@ -102,7 +102,7 @@ export const loadCurrentUser = (soft = false): AsyncUserAction => async (dispatc
   }
 };
 
-export const updateCarOfDriver = (car: Car): AsyncUserAction =>
+export const updateCarOfDriver = (carToUpdate: Car): AsyncUserAction =>
   async (dispatch, getRootState) => {
     dispatch(setIsLoading(true));
 
@@ -111,13 +111,13 @@ export const updateCarOfDriver = (car: Car): AsyncUserAction =>
       if (!driver) return
       const carId = driver.car?.id;
       const updatedCar = carId
-        ? await profileService.updateCar(carId, car)
-        : await profileService.createCar(car);
+        ? await profileService.updateCar(carId, carToUpdate)
+        : await profileService.createCar(carToUpdate);
       
       if (!updatedCar?.id) return
-
+      const { car, ...driverBody } = driver;
       const updatedDriver = await profileService.updateDriver(driver?.id, {
-        ...driver,
+        ...driverBody,
         carId: updatedCar.id
       })
       dispatch(setDriver(updatedDriver))
@@ -142,3 +142,17 @@ export const updateDriver = (driverId: Driver['id'], driver: Driver): AsyncUserA
       dispatch(setIsLoading(false));
     }
   };
+
+export const updateUser = (userId: User['id'], user: User): AsyncUserAction =>
+  async (dispatch, getRootState) => {
+    dispatch(setIsLoading(true));
+
+    try {
+      await profileService.updateUser(userId, user);
+      loadCurrentUser(true)(dispatch, getRootState);
+    } catch (err) {
+      feedback.error(err && err.message ? err.message : err);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  }

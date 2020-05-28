@@ -25,7 +25,7 @@ export const register = async ({ password, ...userData }: User, next: NextFuncti
     return next({ status: 500, message: `Can't regsiter user. Plese try again` });
   }
 
-  if (newUser.role === Role.DRIVER) {
+  if (newUser.role === 'DRIVER') {
     const [newDriverId] = await knexConnection<Driver>('drivers')
       .returning('id')
       .insert({ userId: newUserId });

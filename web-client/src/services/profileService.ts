@@ -1,5 +1,6 @@
 import { Driver, Car } from './../types/profile.types'
 import callWebApi from 'helpers/webApiHelper'
+import { User } from 'types/user.types';
 
 export const getCarById = async (carId: Car['id']): Promise<Car> => {
   const response = await callWebApi({
@@ -40,3 +41,12 @@ export const updateDriver = async (driverId: Driver['id'], driver: Driver): Prom
   return response.json();
 };
 
+export const updateUser = async (userId: User['id'], user: User): Promise<User> => {
+  const response = await callWebApi({
+    endpoint: `/api/profile/user/${userId}`,
+    type: 'PUT',
+    request: user
+  });
+
+  return response.json();
+}

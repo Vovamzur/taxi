@@ -111,6 +111,11 @@ export default {
               latitude: {
                 allowNull: false,
                 type: Sequelize.FLOAT
+              },
+              isActive: {
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
+                defaultValue: true,
               }
             },
             { transaction }

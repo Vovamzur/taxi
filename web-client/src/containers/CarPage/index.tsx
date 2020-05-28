@@ -28,15 +28,17 @@ const CarPage = () => {
   } = useValidation(driver?.car || undefined);
 
   useEffect(() => {
-    driver?.car?.brand && brandChanged(driver?.car?.brand)
-    driver?.car?.number && numberChanged(driver?.car?.number)
-    driver?.car?.year && yearChanged(driver?.car?.year)
-  }, [driver?.car])
+    if (!driver || !driver.car) return
+    const { brand, number, year } = driver.car
+    brandChanged(brand)
+    numberChanged(number)
+    yearChanged(year)
+  }, [driver, brandChanged, numberChanged, yearChanged])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const isValid = [validateBrand(), validateNumber(), validateYear()].every(Boolean);
-
+    
     if (!isValid) {
       return
     }
@@ -60,6 +62,7 @@ const CarPage = () => {
               icon="at"
               iconPosition="left"
               placeholder="Brand"
+              value={brand}
               type="text"
               error={!isBrandValid}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>) => brandChanged(ev.target.value)}
@@ -72,6 +75,7 @@ const CarPage = () => {
               iconPosition="left"
               placeholder="Number"
               type="text"
+              value={number}
               error={!isNumberValid}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>) => numberChanged(ev.target.value)}
               onBlur={validateNumber}
@@ -83,6 +87,7 @@ const CarPage = () => {
               iconPosition="left"
               placeholder="Manufacturing Year"
               type="number"
+              value={year}
               error={!isYearValid}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>) => yearChanged(+ev.target.value)}
               onBlur={validateYear}
@@ -94,18 +99,18 @@ const CarPage = () => {
                   </Button>
                 : null
             }
-            <Button
-              style={{ marginTop: 20 }}
-              type="button"
-              color="teal"
-              fluid
-              size="medium"
-              onClick={() => setIsEditMode(mode => !mode)}
-            >
-              { isEditMode ? 'exit from editing mode' : 'edit car' }
-            </Button>
           </Segment>
         </Form>
+        <Button
+          style={{ marginTop: 20 }}
+          type="button"
+          color="teal"
+          fluid
+          size="medium"
+          onClick={() => setIsEditMode(mode => !mode)}
+        >
+          { isEditMode ? 'exit from editing mode' : 'edit car' }
+        </Button>
       </Grid.Column>
     </Grid>
   )
