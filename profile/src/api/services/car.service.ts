@@ -1,7 +1,6 @@
 import { NextFunction } from 'express';
-import { getCustomRepository } from 'typeorm';
 
-import carRepository from '../../db/repositories/car.repository';
+import knexConnection from '../../db/knexConnection';
 import { Car } from '../../models'
 
 type ServiceResult = Promise<Car | void>
@@ -9,7 +8,7 @@ type ServiceResult = Promise<Car | void>
 type GetCarById = (id: Car['id'], next: NextFunction) => ServiceResult
 
 export const getCarById: GetCarById = async (id, next) => {
-  const car = await getCustomRepository(carRepository).findOne({ where: { id } });
+  const car = await knexConnection<Car>('cars').where('id', '=', id).first();
   if (!car) {
     return next({ status: 404, message: `There is no car with such id: ${id}` })
   }
@@ -20,7 +19,10 @@ export const getCarById: GetCarById = async (id, next) => {
 type CreateCar = (car: Car, next: NextFunction) => ServiceResult
 
 export const createCar: CreateCar = async (car, next) => {
-  const newCar = await getCustomRepository(carRepository).save(car);
+  const [newCarId] = await knexConnection<Car>('cars')
+    .returning('id')
+    .insert(car);
+  const newCar = knexConnection<Car>('cars').where('id', '=', newCarId).first();
   if (!newCar) {
     return next({ status: 500, message: `can't create a new car` });
   }
@@ -31,13 +33,12 @@ export const createCar: CreateCar = async (car, next) => {
 type UpdateCar = (id: Car['id'], car: Car, next: NextFunction) => ServiceResult
 
 export const updateCar: UpdateCar = async (id, car, next) => {
-  const carRepo = getCustomRepository(carRepository)
-  const dbCar = await carRepo.findOne({ where: { id } });
+  const dbCar = await knexConnection<Car>('cars').where('id', '=', id).first();
   if (!dbCar) {
     return next({ status: 404, message: `There is no car with such id: ${id}` })
   }
-  await carRepo.update(id, car);
-  const updatedCar = await carRepo.findOne({ where: { id } });
+  await knexConnection<Car>('cars').where('id', '=', id).update(car);
+  const updatedCar = await knexConnection<Car>('cars').where('id', '=', id).first();
   if (!updatedCar) {
     return next({ status: 500, message: `can't update car` });
   }

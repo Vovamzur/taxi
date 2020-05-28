@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:password@localhost:5432/bookingService?schema=public"
+  url      = "postgresql://postgres:password@localhost:5432/bookingService1?schema=public"
 }
 
 model cars {

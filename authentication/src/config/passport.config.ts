@@ -4,7 +4,6 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import knexConnection from './../db/knexConnection';
 import cryptoHelper from '../helpers/crypto.helper';
-import loginSchema from './../validations/login.schema';
 import { secret } from './../config/jwt.config';
 import { User } from '../types/user.type';
 

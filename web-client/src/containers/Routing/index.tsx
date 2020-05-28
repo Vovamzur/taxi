@@ -10,6 +10,7 @@ import LoginPage from 'containers/Auth/Login'
 import RegistrationPage from 'containers/Auth/Registration';
 import MainPage from 'containers/MainPage';
 import CarPage from 'containers/CarPage';
+import ProfilePage from 'containers/Profile'
 
 import Spinner from 'components/Spinner';
 import Header from 'components/Header';
@@ -17,16 +18,26 @@ import Header from 'components/Header';
 import NotFound from 'scenes/NotFound';
 
 import { RootState } from 'store/types';
+import { Role } from 'types/user.types';
+
+import { history } from 'store'
 
 const Routing = () => {
   const dispatch = useDispatch();
   const {
-    isLoading, user, isAuthorized
+    isLoading, user, isAuthorized, driver
   } = useSelector((state: RootState) => state.profile);
   const token = localStorage.getItem('token');
+
   useEffect(() => {
     dispatch(loadCurrentUser());
-  }, [dispatch]);
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    if (user !== null && user.role === Role.DRIVER && (!driver || !driver.car)) {
+      history.push('/car')
+    }
+  }, [user, driver]);
 
   if (isLoading || (token && !isAuthorized)) {
     return <Spinner />;
@@ -43,8 +54,9 @@ const Routing = () => {
           <Header username={user ? user.email : ''} />
           <main>
             <Switch>
-              <Route path='/' component={MainPage} />
-              <Route path='/' component={CarPage} />
+              <Route exact path='/' component={MainPage} />
+              <Route path='/car' component={CarPage} />
+              <Route path='/profile' component={ProfilePage} />
 
               <Route render={() => <Redirect to='/404' />} />
             </Switch>

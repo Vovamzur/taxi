@@ -4,8 +4,7 @@ import { feedback } from 'react-feedbacker';
 import { SET_USER, SET_IS_LOADING, UserAction, AsyncUserAction, SET_CAR, SET_DRIVER } from './action.types';
 import * as authService from '../../services/authService';
 import * as profileService from '../../services/profileService';
-import { history } from './../../store'
-import { User, Role } from '../../types/user.types';
+import { User } from '../../types/user.types';
 import { LoginCredentials, RegisterCredentials } from './../../types/auth.types';
 import { Driver, Car } from './../../types/profile.types';
 
@@ -48,30 +47,21 @@ const handleAuthResponse = (
     token: string;
   }>,
 ): AsyncUserAction => async (dispatch, getRootState) => {
+  dispatch(setIsLoading(true))
   try {
     const { user, token } = await authResponsePromise;
     setAuthData(user, token)(dispatch, getRootState);
   } catch (err) {
     feedback.error(err && err.message ? err.message : err);
-  }
-};
-
-export const login = (request: LoginCredentials) =>
+  } finally {
+    dispatch(setIsLoading(false))
+  };
+}
+export const login = (request: LoginCredentials): AsyncUserAction =>
   handleAuthResponse(authService.login(request));
 
-export const registration = (request: RegisterCredentials): AsyncUserAction => 
-  async (dispatch, getRootState) => {
-    setIsLoading(true)
-    try {
-      const { user, token } = await authService.registration(request);
-      setAuthData(user, token)(dispatch, getRootState);
-      history.push(user.role === Role.DRIVER ? '/car' : '/')
-    } catch (err) {
-      feedback.error(err && err.message ? err.message : err);
-    } finally {
-      setIsLoading(false)
-    }
-  }
+export const registration = (request: RegisterCredentials): AsyncUserAction =>
+  handleAuthResponse(authService.registration(request))
 
 const retrieveTokenFromCookie = () => {
   const token = Cookies.get('token');
@@ -92,6 +82,13 @@ export const loadCurrentUser = (soft = false): AsyncUserAction => async (dispatc
   try {
     const user = await authService.getCurrentUser();
     dispatch(setUser(user));
+    if (user!.driver) {
+      if (user!.driver.carId) {
+        const car = await profileService.getCarById(user!.driver.carId);
+        dispatch(setCar(car))
+      }
+      dispatch(setDriver(user!.driver))
+    }
   } catch (err) {
     dispatch(setUser(null));
   } finally {
@@ -105,19 +102,32 @@ export const loadCurrentUser = (soft = false): AsyncUserAction => async (dispatc
   }
 };
 
-export const updateCarOfDriver = (driverId: Driver['id'], car: Car): AsyncUserAction => 
-  async (dispatch) => {
+export const updateCarOfDriver = (car: Car): AsyncUserAction =>
+  async (dispatch, getRootState) => {
     dispatch(setIsLoading(true));
 
     try {
-      const updatedCar = await profileService.updateCar(driverId, car);
+      const { driver } = getRootState().profile
+      if (!driver) return
+      const carId = driver.car?.id;
+      const updatedCar = carId
+        ? await profileService.updateCar(carId, car)
+        : await profileService.createCar(car);
+      
+      if (!updatedCar?.id) return
+
+      const updatedDriver = await profileService.updateDriver(driver?.id, {
+        ...driver,
+        carId: updatedCar.id
+      })
+      dispatch(setDriver(updatedDriver))
       dispatch(setCar(updatedCar))
     } catch (err) {
       feedback.error(err && err.message ? err.message : err);
     } finally {
       dispatch(setIsLoading(false));
     }
-  }
+  };
 
 export const updateDriver = (driverId: Driver['id'], driver: Driver): AsyncUserAction =>
   async (dispatch) => {
@@ -131,4 +141,4 @@ export const updateDriver = (driverId: Driver['id'], driver: Driver): AsyncUserA
     } finally {
       dispatch(setIsLoading(false));
     }
-  }
+  };

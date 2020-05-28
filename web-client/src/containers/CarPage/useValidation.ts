@@ -4,10 +4,10 @@ import validator from 'validator';
 type Props = {
   brand: string;
   number: string;
-  year: 2020;
+  year: number;
 };
 
-export const useValidation = (initState: Props = { brand: '', number: '', year: 2020 }) => {
+export const useValidation = (initState: Props = { brand: '', number: '', year: 0 }) => {
   const [brand, setBrand] = useState<string>(initState.brand);
   const [number, setNumber] = useState<string>(initState.number);
   const [year, setYear] = useState<number>(initState.year);

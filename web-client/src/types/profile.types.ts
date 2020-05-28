@@ -9,5 +9,6 @@ export type Driver = {
   id: string,
   numberOfTrips: number,
   mark: number,
-  car: Car | null,
+  carId: string | null,
+  car?: Car | null,
 };

@@ -7,6 +7,7 @@ declare global {
       PROFILE_PORT: number;
       PROFILE_DB_URL: string;
       AUTH_API_URL: string;
+      DB_DIALECT: string;
     }
   }
 }

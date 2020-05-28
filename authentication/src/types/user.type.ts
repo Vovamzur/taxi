@@ -1,3 +1,5 @@
+import { Driver } from './driver.type';
+
 export enum Role {
   CLIENT = 'CLIENT',
   DRIVER = 'DRIVER',
@@ -9,13 +11,21 @@ export enum Sex {
   FEMALE = 'FEMALE',
 }
 
-export type User = {
+export type LoginUser = {
   id: number,
   role: Role,
   email: string,
-  password: string,
   fio: string,
   sex: Sex,
   age: number,
   avatarUrl?: string,
+  driver?: Driver,
+};
+
+export type User = LoginUser & {
+  password: string,
+};
+
+export type FullUser = LoginUser & {
+  password: string,
 };

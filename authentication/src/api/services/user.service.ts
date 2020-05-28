@@ -1,8 +1,9 @@
 import { NextFunction } from 'express';
 
 import { User } from '../../types/user.type';
-import knexConnection from '../../db/knexConnection'
+import knexConnection from '../../db/knexConnection';
 import { UserToSend } from './../../models/UserToSend';
+import { Driver } from '../../types/driver.type';
 
 type ServiceResult = Promise<UserToSend | void>;
 
@@ -13,9 +14,10 @@ export const getUserById: GetUserById = async (id, next) => {
   if (!user) {
     return next({ status: 404, message: 'There is no user with such ID!' });
   }
+  const driver = await knexConnection<Driver>('drivers').where('userId', '=', user.id).first();
   const { password: _, ...userToSend } = user;
 
-  return userToSend;
+  return { ...userToSend, driver };
 };
 
 type UpdateUserByID = (id: User['id'], data: User, next: NextFunction) => ServiceResult;
