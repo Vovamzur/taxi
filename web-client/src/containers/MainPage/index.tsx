@@ -22,7 +22,7 @@ const MainPage = () => {
   }
   return (
     <Grid>
-      main page
+      <Map />
     </Grid>
   )
 };

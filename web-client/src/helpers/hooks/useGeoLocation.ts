@@ -8,9 +8,15 @@ import { Coordinate } from 'types/coodrinate.types';
 
 const LOCATION_DELAY = 10000;
 
-export const useGeoLocation = (delay = LOCATION_DELAY): [Coordinate?, string?] => {
+export const useGeoLocation = (delay = LOCATION_DELAY): [
+  () => void,
+  React.Dispatch<React.SetStateAction<Coordinate | undefined>>,
+  React.Dispatch<React.SetStateAction<string | undefined>>,
+  Coordinate?,
+  string?
+] => {
   const { user, isAuthorized } = useSelector((state: RootState) => state.profile);
-  const [position, error] = usePosition();
+  const [nulifyPosition, setPosition, setError, position, error] = usePosition();
   const savedCallback = useRef<null | NodeJS.Timeout>();
 
   useEffect(() => {
@@ -26,5 +32,5 @@ export const useGeoLocation = (delay = LOCATION_DELAY): [Coordinate?, string?] =
     }
   }, [user, isAuthorized, delay, error, position])
 
-  return [position, error];
+  return [nulifyPosition, setPosition, setError, position, error];
 };

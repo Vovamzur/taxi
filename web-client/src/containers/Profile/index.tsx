@@ -38,7 +38,7 @@ const ProfilePage = withRouter(({ history }) => {
     fioChanged(fio);
     sexChanged(sex);
     ageChanged(age);
-  }, [profile.user, emailChanged, fioChanged, sexChanged, ageChanged]);
+  }, [profile.user]);
 
   const onEditCarClick = e => {
     e.stopPropagation();

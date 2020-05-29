@@ -8,7 +8,13 @@ const defaultSettings = {
   maximumAge: 0,
 };
 
-export const usePosition = (watch = false, settings = defaultSettings): [Coordinate?, string?] => {
+export const usePosition = (watch = false, settings = defaultSettings): [
+  () => void,
+  React.Dispatch<React.SetStateAction<Coordinate | undefined>>,
+  React.Dispatch<React.SetStateAction<string | undefined>>,
+  Coordinate?,
+  string?
+] => {
   const [position, setPosition] = useState<Coordinate>();
   const [error, setError] = useState<string>();
   
@@ -16,9 +22,14 @@ export const usePosition = (watch = false, settings = defaultSettings): [Coordin
     const { longitude, latitude } = coords
     setPosition({ longitude, latitude });
   };
+
   const onError: PositionErrorCallback = (error) => {
     setError(error.message);
   };
+
+  const nulifyPosition = () => {
+    navigator.geolocation.getCurrentPosition(onChange, onError, settings);
+  }
 
   useEffect(() => {
     if (!navigator || !navigator.geolocation) {
@@ -36,5 +47,5 @@ export const usePosition = (watch = false, settings = defaultSettings): [Coordin
     settings.timeout,
     settings.maximumAge
   ]);
-  return [position, error];
+  return [nulifyPosition, setPosition, setError, position, error];
 };

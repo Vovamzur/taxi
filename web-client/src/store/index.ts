@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import { createBrowserHistory } from 'history';
 
 import profileReducer from 'containers/Profile/reducer';
+import mapReducer from 'containers/Map/reducer';
 
 export const history = createBrowserHistory();
 
@@ -12,7 +13,8 @@ const initialState = {};
 const middlewares = [thunk, routerMiddleware(history)];
 const composedEnhancers = composeWithDevTools(applyMiddleware(...middlewares));
 const reducers = {
-  profile: profileReducer
+  profile: profileReducer,
+  map: mapReducer,
 };
 const rootReducer = combineReducers({
   router: connectRouter(history),

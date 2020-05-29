@@ -1,7 +1,14 @@
 import Cookies from 'js-cookie';
 import { feedback } from 'react-feedbacker';
 
-import { SET_USER, SET_IS_LOADING, UserAction, AsyncUserAction, SET_CAR, SET_DRIVER } from './action.types';
+import {
+  SET_USER,
+  SET_IS_LOADING,
+  SET_CAR,
+  SET_DRIVER,
+  UserAction,
+  AsyncUserAction,
+} from './action.types';
 import * as authService from '../../services/authService';
 import * as profileService from '../../services/profileService';
 import { User } from '../../types/user.types';
@@ -16,7 +23,7 @@ export const setUser = (user: User | null): UserAction => ({
   payload: user,
 });
 
-const setIsLoading = (isLoading: boolean): UserAction => ({
+export const setIsLoading = (isLoading: boolean): UserAction => ({
   type: SET_IS_LOADING,
   payload: isLoading,
 });

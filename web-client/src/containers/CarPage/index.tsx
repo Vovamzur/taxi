@@ -33,7 +33,7 @@ const CarPage = () => {
     brandChanged(brand)
     numberChanged(number)
     yearChanged(year)
-  }, [driver, brandChanged, numberChanged, yearChanged])
+  }, [driver])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,8 +62,8 @@ const CarPage = () => {
               icon="at"
               iconPosition="left"
               placeholder="Brand"
-              value={brand}
               type="text"
+              value={brand}
               error={!isBrandValid}
               onChange={(ev: React.ChangeEvent<HTMLInputElement>) => brandChanged(ev.target.value)}
               onBlur={validateBrand}
