@@ -16,6 +16,7 @@ import { User } from 'types/user.types';
 import { Driver } from 'types/profile.types';
 import { OrderStatus } from 'types/order.types';
 import { ConditionaRide } from './reducer';
+import { OrderProps } from 'types/order.types';
 
 const setIsLoading = (isLoading: boolean): MapAction => ({
   type: SET_IS_LOADING,
@@ -47,3 +48,9 @@ export const setConditionalRide = (ride: ConditionaRide | null): MapAction => ({
   payload: ride,
 });
 
+export const bookTrip = ({ userId, from, to }: OrderProps): AsyncMapAction =>
+  async (dispatch, getRootState) => {
+    const order = await bookingService.bookTrip({ userId, from, to });
+
+    console.log(order)
+  };

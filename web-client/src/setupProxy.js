@@ -10,14 +10,14 @@ module.exports = app => {
   );
 
   app.use(
-    '/api/profile*',
+    '/api/profile/*',
     createProxyMiddleware({
       target: process.env.PROFILE_SERVICE_URL,
     }),
   );
 
   app.use(
-    '/api/order*',
+    '/api/order/*',
     createProxyMiddleware({
       target: process.env.BOOKING_SERVICE_URL,
     }),

@@ -16,6 +16,7 @@ import { Coordinate } from 'types/coodrinate.types';
 import { useGeoLocation } from 'helpers/hooks/useGeoLocation';
 import Spinner from 'components/Spinner';
 import { RootState } from 'store/types';
+import { bookTrip } from './actions';
 
 import carUrl from './car.png';
 import userUrl from './user.png';
@@ -65,9 +66,12 @@ const MapWithSearch = () => {
   }
 
   const bookTaxiRide = () => {
-    if (!fromPosition || !detsinationPosition) {
-      feedback.error('Please select from and destination addresses')
+    if (!fromPosition || !detsinationPosition || !user?.id) {
+      feedback.error('Please select from and destination addresses');
+      return
     }
+
+    dispatch(bookTrip({ userId: user.id, from: fromPosition, to: detsinationPosition }));
   }
 
   useEffect(() => {

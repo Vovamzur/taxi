@@ -24,20 +24,20 @@ async function start() {
     await knexConnection.raw('select 1+1 as result');
     console.log('Connection to auth DB has been established successfully.');
 
-    app.get('/nearestDrivers', async (req, res) => {
-      const { userId, userCoordinate } = req.body;
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.post('/nearestDrivers/:userId', async (req, res) => {
+      console.log(req.body)
       const allActiveDrivers = await knexConnection<Coordinate>('coordinates')
-        .where('userId', '<>', userId)
         .where('isActive', '=', true)
         .select();
-      const nearestDrivers = getInRadius(allActiveDrivers, userCoordinate);
+      const nearestDrivers = getInRadius(allActiveDrivers, req.body);
       
       res.json(nearestDrivers)
     });
 
     io.on('connection', (socket: SocketIO.Socket) => {
       socket.on('updatePosition', async ({ userId, position }: UpdateCoordinates) => {
-        console.log('update position: ' + userId)
         const { longitude, latitude } = position
         const row: Coordinate = {
           longitude,
@@ -57,7 +57,6 @@ async function start() {
       });
 
       socket.on('leave', async (userId: string) => {
-        console.log('leave: ' + userId)
         const userCoordinates = await knexConnection<Coordinate>('coordinates')
           .where('userId', '=', userId)
           .first();
@@ -77,7 +76,6 @@ async function start() {
         const nearestDrivers = getInRadius(allActiveDrivers, userCoordinate);
 
         socket.emit('activeDrivers', nearestDrivers)
-        console.log(userCoordinate, nearestDrivers)
       });
     });
 

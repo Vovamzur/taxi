@@ -10,7 +10,7 @@ export enum Sex {
 }
 
 export type User = {
-  id: number,
+  id: string,
   role: Role,
   email: string,
   fio: string,

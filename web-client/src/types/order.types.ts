@@ -1,3 +1,5 @@
+import { Coordinate } from './coodrinate.types';
+
 export enum OrderStatus {
   NONE = 'NONE',
   PENDING = 'PENDING',
@@ -5,4 +7,10 @@ export enum OrderStatus {
   STARTED = 'STARTED',
   FINISHED = 'FINISHED',
   CANCELED = 'CANCELED',
+};
+
+export type OrderProps = {
+  userId: string,
+  from: Coordinate,
+  to: Coordinate
 };
