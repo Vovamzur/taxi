@@ -89,13 +89,11 @@ export const loadCurrentUser = (soft = false): AsyncUserAction => async (dispatc
   try {
     const user = await authService.getCurrentUser();
     dispatch(setUser(user));
-    if (user!.driver) {
-      dispatch(setDriver(user!.driver))
-      if (user!.driver.carId) {
-        const car = await profileService.getCarById(user!.driver.carId);
-        dispatch(setCar(car))
-      }
-    }
+    if (!user || !user.driver) return
+    dispatch(setDriver(user.driver))
+    if (!user.driver.carId) return
+    const car = await profileService.getCarById(user.driver.carId);
+    dispatch(setCar(car))
   } catch (err) {
     dispatch(setUser(null));
   } finally {

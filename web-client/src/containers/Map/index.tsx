@@ -15,11 +15,11 @@ import { feedback } from 'react-feedbacker';
 import { Coordinate } from 'types/coodrinate.types';
 import { useGeoLocation } from 'helpers/hooks/useGeoLocation';
 import Spinner from 'components/Spinner';
+import { RootState } from 'store/types';
 
 import carUrl from './car.png';
 import userUrl from './user.png';
 import taxiUrl from './taxi.png';
-import { RootState } from 'store/types';
 
 const googleMapURL = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_KEY}&v=3.exp&libraries=geometry,drawing,places`
 const DEFAULT_CENTER: Coordinate = { longitude: 27.7692977, latitude: 49.0351864 }
@@ -27,6 +27,7 @@ const DEFAULT_ZOOM = 10
 
 const MapWithSearch = () => {
   const dispatch = useDispatch();
+  const { activeDrivers } = useSelector((state: RootState) => state.map);
   const { user } = useSelector((state: RootState) => state.profile);
   const [nulifyPosition, setFromPosition, setError, fromPosition = DEFAULT_CENTER, error] = useGeoLocation();
   const [detsinationPosition, setDestinationPositiion] = useState<Coordinate>();
@@ -142,11 +143,22 @@ const MapWithSearch = () => {
           url: user?.role === 'DRIVER' ? taxiUrl : userUrl,
           scaledSize: new google.maps.Size(50, 50)
         }}
-        draggable={true}
+        draggable={user?.role === 'CLIENT'}
         onDragEnd={onUserMarkerDragEnd}
         position={{ lat: fromPosition.latitude, lng: fromPosition.longitude }}
       />
       {route && <DirectionsRenderer directions={route} />}
+      {activeDrivers.map(({ longitude, latitude }) => (
+        <Marker
+          key={longitude + latitude}
+          icon={{
+            url: carUrl,
+            scaledSize: new google.maps.Size(50, 50)
+          }}
+          draggable={false}
+          position={{ lat: latitude, lng: longitude }}
+        />
+      ))}
     </GoogleMap>
   )
 }

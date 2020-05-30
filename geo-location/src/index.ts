@@ -5,6 +5,7 @@ import socketIO from 'socket.io';
 
 import knexConnection from './dbConnection';
 import { UpdateCoordinates, Coordinate } from './coordinates.type';
+import { getInRadius } from './helpers/distance';
 
 const app: Application = express();
 const port: number = process.env.GEO_LOCATION_PORT;
@@ -18,7 +19,7 @@ process.on('uncaughtException', logError);
 process.on('warning', logError);
 process.on('unhandledRejection', logError);
 
-async function start () {
+async function start() {
   try {
     await knexConnection.raw('select 1+1 as result');
     console.log('Connection to auth DB has been established successfully.');
@@ -38,8 +39,8 @@ async function start () {
           .first();
         userCoordinates
           ? await knexConnection<Coordinate>('coordinates')
-              .where('id', '=', userCoordinates.id)
-              .update(row)
+            .where('id', '=', userCoordinates.id)
+            .update(row)
           : await knexConnection<Coordinate>('coordinates').insert(row)
       });
 
@@ -48,15 +49,26 @@ async function start () {
         const userCoordinates = await knexConnection<Coordinate>('coordinates')
           .where('userId', '=', userId)
           .first();
-        
+
         if (!userCoordinates) return
 
         await knexConnection<Coordinate>('coordinates')
           .where('id', '=', userCoordinates.id)
           .update({ ...userCoordinates, isActive: false });
       });
+
+      socket.on('nearestDrivers', async ({ userId, userCoordinate }: { userId: string, userCoordinate: Coordinate}) => {
+        const allActiveDrivers = await knexConnection<Coordinate>('coordinates')
+          .where('userId', '<>', userId)
+          .where('isActive', '=', true)
+          .select();
+        const nearestDrivers = getInRadius(allActiveDrivers, userCoordinate);
+
+        socket.emit('activeDrivers', nearestDrivers)
+        console.log(userCoordinate, nearestDrivers)
+      });
     });
-    
+
     httpServer.listen(port, () => {
       console.log(`Geolocation service start on port ${port}`);
     });
@@ -65,10 +77,10 @@ async function start () {
   }
 }
 
-async function gracefullShutdown () {
+async function gracefullShutdown() {
 
 }
 
-function logError (err: Error) {
+function logError(err: Error) {
   console.error(`Geo location service error: ${err}`);
 }

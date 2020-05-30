@@ -22,7 +22,9 @@ import { RootState } from 'store/types';
 const Routing = () => {
   const dispatch = useDispatch();
   const token = localStorage.getItem('token');
-  const { isLoading, user, isAuthorized } = useSelector((state: RootState) => state.profile);
+  const { profile, map } = useSelector((state: RootState) => state);
+  const { user, isAuthorized } = profile;
+  const isLoading = profile.isLoading || map.isLoading;
 
   useEffect(() => {
     dispatch(loadCurrentUser());

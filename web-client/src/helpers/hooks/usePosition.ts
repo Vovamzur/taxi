@@ -8,13 +8,15 @@ const defaultSettings = {
   maximumAge: 0,
 };
 
-export const usePosition = (watch = false, settings = defaultSettings): [
+export type UseLocation = [
   () => void,
   React.Dispatch<React.SetStateAction<Coordinate | undefined>>,
   React.Dispatch<React.SetStateAction<string | undefined>>,
   Coordinate?,
   string?
-] => {
+]
+
+export const usePosition = (watch = false, settings = defaultSettings): UseLocation => {
   const [position, setPosition] = useState<Coordinate>();
   const [error, setError] = useState<string>();
   
