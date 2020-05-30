@@ -1,12 +1,12 @@
 import dotenv from 'dotenv';
 
 import sequelize from './data/db/connection';
-import server from './server'
+import app from './app'
 
 dotenv.config();
 
 const port = process.env.BOOKING_SERVICE_PORT;
-let app;
+const httpServer = http.createServer(app);
 
 start();
 
@@ -20,8 +20,9 @@ async function start () {
     await sequelize.authenticate();
     console.log('Connection to bookign DB has been established successfully.');
 
-    app = await server.start({ port });
-    console.log(`Booking service starts on port ${port}`);
+    httpServer.listen(port, () => {
+      console.log(`Booking service starts on port ${port}`);
+    })
   } catch (err) {
     logError(err);
   }
@@ -30,7 +31,12 @@ async function start () {
 async function gracefullShutdown() {
   try {
     await sequelize.close();
-    await app.close()
+    httpServer.close((error) => {
+      if (error) {
+        logError(error);
+        process.exit(1);
+      }
+    });
     process.exit(0);
   } catch (error) {
     logError(error);

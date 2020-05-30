@@ -18,6 +18,14 @@ export default (orm, DataTypes) => {
           key: 'id'
         }
       },
+      clientSocketId: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      driverSocketId: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
       status: {
         allowNull: false,
         type: DataTypes.ENUM('pending', 'submited', 'started', 'finished', 'canceled')

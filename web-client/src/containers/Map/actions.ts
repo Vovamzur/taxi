@@ -42,7 +42,7 @@ const setOrderStatus = (status: OrderStatus): MapAction => ({
   payload: status,
 });
 
-const setConditionalRide = (ride: ConditionaRide | null): MapAction => ({
+export const setConditionalRide = (ride: ConditionaRide | null): MapAction => ({
   type: SET_CONDITIONAL_RIDE,
   payload: ride,
 });

@@ -10,6 +10,10 @@ export default (orm, DataTypes) => {
           key: 'id'
         }
       },
+      socketId: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
       longitude: {
         allowNull: false,
         type: DataTypes.FLOAT

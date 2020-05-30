@@ -116,6 +116,10 @@ export default {
                 allowNull: false,
                 type: Sequelize.BOOLEAN,
                 defaultValue: true,
+              },
+              socketId: {
+                allowNull: false,
+                type: Sequelize.STRING,
               }
             },
             { transaction }
@@ -129,6 +133,14 @@ export default {
                 primaryKey: true,
                 type: Sequelize.UUID,
                 defaultValue: Sequelize.literal('gen_random_uuid()'),
+              },
+              clientSocketId: {
+                allowNull: false,
+                type: Sequelize.STRING,
+              },
+              driverSocketId: {
+                allowNull: true,
+                type: Sequelize.STRING,
               },
               status: {
                 allowNull: false,

@@ -14,7 +14,8 @@ import { Coordinate } from 'types/coodrinate.types';
 
 export type ConditionaRide = {
   from: Coordinate,
-  to: Coordinate
+  to: Coordinate,
+  useFio: string,
 };
 
 type State = {

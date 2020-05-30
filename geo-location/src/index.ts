@@ -24,6 +24,17 @@ async function start() {
     await knexConnection.raw('select 1+1 as result');
     console.log('Connection to auth DB has been established successfully.');
 
+    app.get('/nearestDrivers', async (req, res) => {
+      const { userId, userCoordinate } = req.body;
+      const allActiveDrivers = await knexConnection<Coordinate>('coordinates')
+        .where('userId', '<>', userId)
+        .where('isActive', '=', true)
+        .select();
+      const nearestDrivers = getInRadius(allActiveDrivers, userCoordinate);
+      
+      res.json(nearestDrivers)
+    });
+
     io.on('connection', (socket: SocketIO.Socket) => {
       socket.on('updatePosition', async ({ userId, position }: UpdateCoordinates) => {
         console.log('update position: ' + userId)
@@ -32,7 +43,8 @@ async function start() {
           longitude,
           latitude,
           userId,
-          isActive: true
+          isActive: true,
+          socketId: socket.id
         }
         const userCoordinates = await knexConnection<Coordinate>('coordinates')
           .where('userId', '=', userId)
