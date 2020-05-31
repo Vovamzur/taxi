@@ -27,9 +27,12 @@ const setIsLoading = (isLoading: boolean): MapAction => ({
   payload: isLoading,
 })
 
-export const nulifyState = (): MapAction => ({
-  type: NULIFY_STATE
-})
+export const nulifyState = (): MapAction => {
+  localStorage.removeItem('orderId')
+  return {
+    type: NULIFY_STATE
+  }
+}
 
 export const setActiveDrivers = (activeDrivers: Array<Coordinate & { userId: string }>): MapAction => ({
   type: SET_ACTIVE_DRIVERS,
@@ -73,7 +76,7 @@ export const bookTrip = ({ userId, from, to }: any): AsyncMapAction =>
       clientSocketId: notificationSocket.id
     });
 
-    if (order.sucess) {
+    if (order.success) {
       localStorage.setItem('orderId', order.newOrderId);
       feedback.success('Booked')
       dispatch(setOrderStatus(OrderStatus.PENDING))
@@ -95,6 +98,7 @@ export const acceptOrder = (
         dispatch(setOrderStatus(OrderStatus.SUBMITED));
         dispatch(setActiveClient({ fio: userFio, userId }))
         dispatch(setConditionalRide(null));
+        localStorage.setItem('orderId', orderId)
       }
     } catch (err) {
       feedback.error(err.message)
@@ -107,6 +111,32 @@ export const cancelOrderAction = ({ orderId }): AsyncMapAction => async (dispatc
   dispatch(setIsLoading(true))
   try {
     const result = await bookingService.cancelOrder({ orderId });
+    if (!result.success) return
+    dispatch(nulifyState());
+  } catch (err) {
+    feedback.error(err.message)
+  } finally {
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const startOrderAction = ({ orderId }): AsyncMapAction => async (dispatch) => {
+  dispatch(setIsLoading(true))
+  try {
+    const result = await bookingService.startOrder({ orderId });
+    if (!result.success) return
+    dispatch(setOrderStatus(OrderStatus.STARTED));
+  } catch (err) {
+    feedback.error(err.message)
+  } finally {
+    dispatch(setIsLoading(false))
+  }
+}
+
+export const finishOrderAction = ({ orderId }): AsyncMapAction => async (dispatch) => {
+  dispatch(setIsLoading(true))
+  try {
+    const result = await bookingService.finishOrder({ orderId });
     if (!result.success) return
     dispatch(nulifyState());
   } catch (err) {

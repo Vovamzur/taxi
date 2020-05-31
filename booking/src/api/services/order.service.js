@@ -86,7 +86,7 @@ export const acceptOrder = async ({ orderId, driverSocketId, fio, userId }, io) 
 export const startOrder = async ({ orderId }, io) => {
   try {
     const order = await knexConnection('orders').where('id', '=', orderId).first();
-    await knexConnection.where('id', '=', orderId).update({
+    await knexConnection('orders').where('id', '=', orderId).update({
       ...order,
       status: 'started',
     });
@@ -101,7 +101,7 @@ export const startOrder = async ({ orderId }, io) => {
 export const cancelOrder = async ({ orderId }, io) => {
   try {
     const order = await knexConnection('orders').where('id', '=', orderId).first();
-    await knexConnection.where('id', '=', orderId).update({
+    await knexConnection('orders').where('id', '=', orderId).update({
       ...order,
       status: 'canceled',
     });
@@ -116,7 +116,7 @@ export const cancelOrder = async ({ orderId }, io) => {
 export const finishOrder = async ({ orderId }, io) => {
   try {
     const order = await knexConnection('orders').where('id', '=', orderId).first();
-    await knexConnection.where('id', '=', orderId).update({
+    await knexConnection('orders').where('id', '=', orderId).update({
       ...order,
       status: 'finished',
     });

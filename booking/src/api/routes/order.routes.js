@@ -17,18 +17,18 @@ router
   )
   .post('/start-order', (req, res, next) =>
     orderService.startOrder(req.body, req.io)
-      .then(data => res.send(data)
-        .catch(next))
+      .then(data => res.send(data))
+        .catch(next)
   )
   .post('/cancel-order', (req, res, next) =>
     orderService.cancelOrder(req.body, req.io)
-      .then(data => res.send(data)
-        .catch(next))
+      .then(data => res.send(data))
+      .catch(next)
   )
   .post('/finish-order', (req, res, next) =>
     orderService.finishOrder(req.body, req.io)
-      .then(data => res.send(data)
-      .catch(next))
+      .then(data => res.send(data))
+      .catch(next)
   )
 
 export default router;

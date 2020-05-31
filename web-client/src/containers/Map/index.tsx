@@ -24,6 +24,8 @@ import {
   acceptOrder,
   setOrderStatus,
   cancelOrderAction,
+  startOrderAction,
+  finishOrderAction,
   nulifyState
 } from './actions';
 import { notificationSocket } from 'helpers/socket/bookingSocket';
@@ -110,11 +112,15 @@ const MapWithSearch = () => {
   };
 
   const startOrder = () => {
-
+    const orderId = localStorage.getItem('orderId');
+    if (!orderId) return
+    dispatch(startOrderAction({ orderId }))
   };
 
   const finishOrder = () => {
-
+    const orderId = localStorage.getItem('orderId');
+    if (!orderId) return
+    dispatch(finishOrderAction({ orderId }))
   };
 
   useEffect(() => {
@@ -272,14 +278,14 @@ const MapWithSearch = () => {
             </Button>
         </div>
         : null}
-      {['submited', 'started'].includes(orderStatus)
+      {['submited', 'started', 'pending'].includes(orderStatus)
         ? <div
           style={{
             position: 'absolute',
             left: 20,
             bottom: 50,
             width: 200,
-            height: 100,
+            height: 150,
             backgroundColor: 'white',
             zIndex: 5
           }}>
@@ -288,10 +294,11 @@ const MapWithSearch = () => {
             user?.role === 'DRIVER'
             ? (<div>
                 <h4>{ activeClient?.fio }</h4>
+                <h3>{ orderStatus }</h3>
                 {orderStatus === 'submited' &&
                 <Button
                   primary
-                  onClick={cancelOrder}
+                  onClick={startOrder}
                 >
                   Start
                 </Button>}
@@ -305,6 +312,7 @@ const MapWithSearch = () => {
               </div>)
             : (<div>
                 <h4>{ driverInfo?.fio }</h4>
+                <h3>{ orderStatus }</h3>
                 {orderStatus === 'submited' &&
                 <Button
                   primary
