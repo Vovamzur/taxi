@@ -36,7 +36,7 @@ export const setActiveDrivers = (activeDrivers: Array<Coordinate & { userId: str
   paylod: activeDrivers,
 });
 
-const setActiveClient = (activeClient: User & Coordinate | null): MapAction => ({
+const setActiveClient = (activeClient: DriverInfo | null): MapAction => ({
   type: SET_ACTIVE_CLIENT,
   payload: activeClient,
 });
@@ -65,7 +65,7 @@ export const setConditionalRideAsync = (ride: ConditionaRide): AsyncMapAction =>
   async (dispatch) => dispatch(setConditionalRide(ride))
 
 export const bookTrip = ({ userId, from, to }: any): AsyncMapAction =>
-  async (dispatch, getRootState) => {
+  async (dispatch) => {
     const order = await bookingService.bookTrip({
       userId,
       from,
@@ -74,6 +74,7 @@ export const bookTrip = ({ userId, from, to }: any): AsyncMapAction =>
     });
 
     if (order.sucess) {
+      localStorage.setItem('orderId', order.newOrderId);
       feedback.success('Booked')
       dispatch(setOrderStatus(OrderStatus.PENDING))
     }
@@ -81,10 +82,36 @@ export const bookTrip = ({ userId, from, to }: any): AsyncMapAction =>
 
 export const acceptOrder = (
   { orderId, driverSocketId, fio, userId }:
-  { orderId: string, driverSocketId: string, fio: string, userId: string }
+    { orderId: string, driverSocketId: string, fio: string, userId: string }
 ): AsyncMapAction =>
-  async (dispatch) => {
-    const result = await bookingService.acceptOrder({ orderId, driverSocketId, fio, userId });
+  async (dispatch, getRootState) => {
+    dispatch(setIsLoading(true))
+    try {
+      const result = await bookingService.acceptOrder({ orderId, driverSocketId, fio, userId });
+      if (result.success) {
+        const { conditionalRide } = getRootState().map
+        if (!conditionalRide) return
+        const { userFio, userId } = conditionalRide
+        dispatch(setOrderStatus(OrderStatus.SUBMITED));
+        dispatch(setActiveClient({ fio: userFio, userId }))
+        dispatch(setConditionalRide(null));
+      }
+    } catch (err) {
+      feedback.error(err.message)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
   };
 
-
+export const cancelOrderAction = ({ orderId }): AsyncMapAction => async (dispatch) => {
+  dispatch(setIsLoading(true))
+  try {
+    const result = await bookingService.cancelOrder({ orderId });
+    if (!result.success) return
+    dispatch(nulifyState());
+  } catch (err) {
+    feedback.error(err.message)
+  } finally {
+    dispatch(setIsLoading(false))
+  }
+}

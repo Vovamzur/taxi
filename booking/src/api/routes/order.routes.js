@@ -10,7 +10,7 @@ router
       .then(data => res.send(data))
       .catch(next),
   )
-  .post('/accept-order', (req, res, nex) =>
+  .post('/accept-order', (req, res, next) =>
     orderService.acceptOrder(req.body, req.io)
       .then(data => res.send(data))
       .catch(next)
@@ -28,7 +28,7 @@ router
   .post('/finish-order', (req, res, next) =>
     orderService.finishOrder(req.body, req.io)
       .then(data => res.send(data)
-        .catch(next))
+      .catch(next))
   )
 
 export default router;

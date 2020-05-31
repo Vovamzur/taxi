@@ -50,7 +50,7 @@ export default {
           {
             type: Sequelize.UUID,
             references: {
-              model: 'drivers',
+              model: 'users',
               key: 'id',
             },
             onUpdate: 'CASCADE',

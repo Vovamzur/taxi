@@ -1,12 +1,12 @@
 import { Coordinate } from './coodrinate.types';
 
 export enum OrderStatus {
-  NONE = 'NONE',
-  PENDING = 'PENDING',
-  SUBMITED = 'SUBMITED',
-  STARTED = 'STARTED',
-  FINISHED = 'FINISHED',
-  CANCELED = 'CANCELED',
+  NONE = 'none',
+  PENDING = 'pending',
+  SUBMITED = 'submited',
+  STARTED = 'started',
+  FINISHED = 'finshed',
+  CANCELED = 'canceled',
 };
 
 export type OrderProps = {

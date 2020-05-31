@@ -19,6 +19,7 @@ export type ConditionaRide = {
   to: Coordinate,
   userFio: string,
   newOrderId: string,
+  userId: string,
 };
 
 export type DriverInfo = {
@@ -30,7 +31,7 @@ type State = {
   isLoading: boolean,
   activeDrivers: Array<Coordinate & { userId: string }>,
   ownDriver: Driver | null,
-  activeClient: User & Coordinate | null,
+  activeClient: DriverInfo | null,
   orderStatus: OrderStatus,
   conditionalRide: ConditionaRide | null,
   driverInfo: DriverInfo | null,

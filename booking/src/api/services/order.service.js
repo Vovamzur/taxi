@@ -57,7 +57,7 @@ export const newOrder = async ({ userId, from, to, clientSocketId }, io) => {
     const user = await knexConnection('users').where('id', '=', userId).first();
 
     data.forEach(driver => {
-      io.emit(`${driver.socketId}new-order`, { from, to, userFio: user.fio, newOrderId });
+      io.emit(`${driver.socketId}new-order`, { from, to, userFio: user.fio, newOrderId, userId: user.id });
     })
     return { success: true, newOrderId };
   } catch (err) {
@@ -66,19 +66,19 @@ export const newOrder = async ({ userId, from, to, clientSocketId }, io) => {
   }
 };
 
-export const aceptOrder = async ({ orderId, driverSocketId, fio, userId }, io) => {
+export const acceptOrder = async ({ orderId, driverSocketId, fio, userId }, io) => {
   try {
     const order = await knexConnection('orders').where('id', '=', orderId).first();
-    await knexConnection.where('id', '=', orderId).update({
+    await knexConnection('orders').where('id', '=', orderId).update({
       ...order,
-      status: 'accepted',
+      status: 'submited',
       driverSocketId,
       driverId: userId,
     });
     io.emit(`${order.clientSocketId}acceptOrder`, { userId, fio })
     return { success: true };
-  } catch (errr) {
-    console.log(erer);
+  } catch (err) {
+    console.log(err);
     return { success: false };
   }
 };
@@ -105,7 +105,7 @@ export const cancelOrder = async ({ orderId }, io) => {
       ...order,
       status: 'canceled',
     });
-    io.emit(`${order.driverSocketId}canceledOrder`, { success: true })
+    io.emit(`${order.driverSocketId}cancelOrder`, { success: true })
     return { success: true }
   } catch(err) {
     console.log(err)

@@ -27,7 +27,7 @@ type SetOwnDriver = {
 
 type SetActiveClient = {
   type: typeof SET_ACTIVE_CLIENT,
-  payload: User & Coordinate | null
+  payload: DriverInfo | null
 };
 
 type SetOrderStatus = {

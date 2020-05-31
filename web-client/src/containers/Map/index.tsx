@@ -23,6 +23,7 @@ import {
   setDriverInfo,
   acceptOrder,
   setOrderStatus,
+  cancelOrderAction,
   nulifyState
 } from './actions';
 import { notificationSocket } from 'helpers/socket/bookingSocket';
@@ -40,13 +41,16 @@ const DEFAULT_ZOOM = 10
 
 const MapWithSearch = () => {
   const dispatch = useDispatch();
-  const { activeDrivers, conditionalRide } = useSelector((state: RootState) => state.map);
+  const { activeDrivers, conditionalRide, orderStatus, activeClient, driverInfo } = useSelector((state: RootState) => state.map);
   const { user } = useSelector((state: RootState) => state.profile);
   const [nulifyPosition, setFromPosition, setError, fromPosition = DEFAULT_CENTER, error] = useGeoLocation();
   const [detsinationPosition, setDestinationPositiion] = useState<Coordinate>();
   const mapCenter = new google.maps.LatLng(fromPosition.latitude, fromPosition.longitude)
   const [route, setRoute] = useState<google.maps.DirectionsResult>();
   const [conditionalRoute, setConditionalRoute] = useState<google.maps.DirectionsResult>();
+  const drivers = driverInfo
+    ? activeDrivers.filter(driver => driver.userId === driver.userId)
+    : activeDrivers
 
   const onFromSelected = place => {
     if (place.name === '') {
@@ -90,7 +94,6 @@ const MapWithSearch = () => {
   const submitOrder = () => {
     if (!conditionalRide || !user) return
     const { newOrderId } = conditionalRide
-    dispatch(setConditionalRide(null));
     const { fio } = user
     dispatch(acceptOrder({
       orderId: newOrderId,
@@ -101,7 +104,9 @@ const MapWithSearch = () => {
   };
 
   const cancelOrder = () => {
-
+    const orderId = localStorage.getItem('orderId');
+    if (!orderId) return
+    dispatch(cancelOrderAction({ orderId }))
   };
 
   const startOrder = () => {
@@ -152,6 +157,7 @@ const MapWithSearch = () => {
 
     // to client
     notificationSocket.on(`${notificationSocket.id}acceptOrder`, (driver: DriverInfo) => {
+      dispatch(setOrderStatus(OrderStatus.SUBMITED));
       dispatch(setDriverInfo(driver));
     });
 
@@ -234,7 +240,7 @@ const MapWithSearch = () => {
       />
       {route && <DirectionsRenderer directions={route} />}
       {conditionalRoute && <DirectionsRenderer directions={conditionalRoute} />}
-      {activeDrivers.map(({ longitude, latitude }) => (
+      {drivers.map(({ longitude, latitude }) => (
         <Marker
           key={longitude + latitude}
           icon={{
@@ -250,7 +256,7 @@ const MapWithSearch = () => {
           style={{
             position: 'absolute',
             left: 20,
-            bottom: 30,
+            bottom: 50,
             width: 200,
             height: 100,
             backgroundColor: 'white',
@@ -266,6 +272,49 @@ const MapWithSearch = () => {
             </Button>
         </div>
         : null}
+      {['submited', 'started'].includes(orderStatus)
+        ? <div
+          style={{
+            position: 'absolute',
+            left: 20,
+            bottom: 50,
+            width: 200,
+            height: 100,
+            backgroundColor: 'white',
+            zIndex: 5
+          }}>
+          <h3>Current trip</h3>
+          {
+            user?.role === 'DRIVER'
+            ? (<div>
+                <h4>{ activeClient?.fio }</h4>
+                {orderStatus === 'submited' &&
+                <Button
+                  primary
+                  onClick={cancelOrder}
+                >
+                  Start
+                </Button>}
+                {orderStatus === 'started' &&
+                <Button
+                  primary
+                  onClick={finishOrder}
+                >
+                  Finish
+                </Button>}
+              </div>)
+            : (<div>
+                <h4>{ driverInfo?.fio }</h4>
+                {orderStatus === 'submited' &&
+                <Button
+                  primary
+                  onClick={cancelOrder}
+                >
+                  Cancel
+                </Button>}
+              </div>)
+          }
+        </div> : null}
     </GoogleMap>
   )
 }
