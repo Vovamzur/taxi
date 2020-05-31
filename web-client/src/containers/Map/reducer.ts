@@ -6,6 +6,7 @@ import {
   SET_CONDITIONAL_RIDE,
   SET_IS_LOADING,
   SET_DRIVER_INFO,
+  NULIFY_STATE,
   MapAction
 } from './actionTypes';
 import { Driver } from 'types/profile.types';
@@ -89,6 +90,12 @@ export default (state = initialState, action: MapAction): State => {
       return {
         ...state,
         driverInfo: action.payload
+      }
+
+    case NULIFY_STATE:
+      return  {
+        ...state,
+        ...initialState
       }
 
     default:

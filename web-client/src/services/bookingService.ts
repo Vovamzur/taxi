@@ -20,3 +20,33 @@ export const acceptOrder = async (props: any) => {
 
   return response.json();
 };
+
+export const startOrder = async (props: any) => {
+  const response = await callWebApi({
+    endpoint: `/api/order/start-order`,
+    type: 'POST',
+    request: props,
+  });
+
+  return response.json();
+};
+
+export const cancelOrder = async (props: any) => {
+  const response = await callWebApi({
+    endpoint: `/api/order/cancel-order`,
+    type: 'POST',
+    request: props,
+  });
+
+  return response.json();
+};
+
+export const finishOrder = async (props: any) => {
+  const response = await callWebApi({
+    endpoint: `/api/order/finish-order`,
+    type: 'POST',
+    request: props,
+  });
+
+  return response.json();
+};

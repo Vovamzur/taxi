@@ -16,7 +16,15 @@ import { Coordinate } from 'types/coodrinate.types';
 import { useGeoLocation } from 'helpers/hooks/useGeoLocation';
 import Spinner from 'components/Spinner';
 import { RootState } from 'store/types';
-import { bookTrip, setConditionalRideAsync, setConditionalRide, setDriverInfo, acceptOrder } from './actions';
+import {
+  bookTrip,
+  setConditionalRideAsync,
+  setConditionalRide,
+  setDriverInfo,
+  acceptOrder,
+  setOrderStatus,
+  nulifyState
+} from './actions';
 import { notificationSocket } from 'helpers/socket/bookingSocket';
 import { getSocketID } from 'helpers/socket/geoLocation';
 import { ConditionaRide, DriverInfo } from './reducer';
@@ -80,12 +88,29 @@ const MapWithSearch = () => {
   }
 
   const submitOrder = () => {
-    if (!conditionalRide || !user) return 
+    if (!conditionalRide || !user) return
     const { newOrderId } = conditionalRide
     dispatch(setConditionalRide(null));
     const { fio } = user
-    dispatch(acceptOrder({ orderId: newOrderId, driverSocketId: notificationSocket.id, fio }))
-  }
+    dispatch(acceptOrder({
+      orderId: newOrderId,
+      driverSocketId: notificationSocket.id,
+      fio,
+      userId: user.id
+    }))
+  };
+
+  const cancelOrder = () => {
+
+  };
+
+  const startOrder = () => {
+
+  };
+
+  const finishOrder = () => {
+
+  };
 
   useEffect(() => {
     if (!detsinationPosition) return
@@ -120,13 +145,30 @@ const MapWithSearch = () => {
   }, [conditionalRide])
 
   useEffect(() => {
+    // to driver
     notificationSocket.on(`${getSocketID()}new-order`, (conditionaRide: ConditionaRide) => {
       dispatch(setConditionalRideAsync(conditionaRide));
     });
 
-    notificationSocket.on(`${notificationSocket.id}accept`, (driver: DriverInfo) => {
+    // to client
+    notificationSocket.on(`${notificationSocket.id}acceptOrder`, (driver: DriverInfo) => {
       dispatch(setDriverInfo(driver));
-    })
+    });
+
+    // to driver 
+    notificationSocket.on(`${notificationSocket.id}cancelOrder`, (driver: DriverInfo) => {
+      dispatch(nulifyState());
+    });
+
+    // to client
+    notificationSocket.on(`${notificationSocket.id}startOrder`, (info: any) => {
+      dispatch(setOrderStatus(OrderStatus.STARTED))
+    });
+
+    // to client
+    notificationSocket.on(`${notificationSocket.id}finishOrder`, (info: any) => {
+      dispatch(nulifyState());
+    });
   }, [])
 
   if (error) {
@@ -205,22 +247,22 @@ const MapWithSearch = () => {
       ))}
       {conditionalRide
         ? <div
-            style={{
-              position: 'absolute',
-              left: 20,
-              bottom: 30,
-              width: 200,
-              height: 100,
-              backgroundColor: 'white',
-              zIndex: 5
-            }}>
-              <h3>New order</h3>
-              <h4>{ conditionalRide.userFio }</h4>
-            <Button
-              primary
-              onClick={submitOrder}
-            >
-              Submit
+          style={{
+            position: 'absolute',
+            left: 20,
+            bottom: 30,
+            width: 200,
+            height: 100,
+            backgroundColor: 'white',
+            zIndex: 5
+          }}>
+          <h3>New order</h3>
+          <h4>{conditionalRide.userFio}</h4>
+          <Button
+            primary
+            onClick={submitOrder}
+          >
+            Submit
             </Button>
         </div>
         : null}

@@ -8,6 +8,7 @@ import {
   SET_CONDITIONAL_RIDE,
   SET_IS_LOADING,
   SET_DRIVER_INFO,
+  NULIFY_STATE,
   MapAction,
   AsyncMapAction,
 } from './actionTypes';
@@ -26,6 +27,10 @@ const setIsLoading = (isLoading: boolean): MapAction => ({
   payload: isLoading,
 })
 
+export const nulifyState = (): MapAction => ({
+  type: NULIFY_STATE
+})
+
 export const setActiveDrivers = (activeDrivers: Array<Coordinate & { userId: string }>): MapAction => ({
   type: SET_ACTIVE_DRIVERS,
   paylod: activeDrivers,
@@ -41,7 +46,7 @@ const setOwnDriver = (ownDriver: Driver | null): MapAction => ({
   payload: ownDriver,
 });
 
-const setOrderStatus = (status: OrderStatus): MapAction => ({
+export const setOrderStatus = (status: OrderStatus): MapAction => ({
   type: SET_ORDER_STATUS,
   payload: status,
 });
@@ -75,8 +80,11 @@ export const bookTrip = ({ userId, from, to }: any): AsyncMapAction =>
   };
 
 export const acceptOrder = (
-  { orderId, driverSocketId, fio }: { orderId: string, driverSocketId: string, fio: string }
+  { orderId, driverSocketId, fio, userId }:
+  { orderId: string, driverSocketId: string, fio: string, userId: string }
 ): AsyncMapAction =>
   async (dispatch) => {
-    cons
+    const result = await bookingService.acceptOrder({ orderId, driverSocketId, fio, userId });
   };
+
+

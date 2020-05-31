@@ -13,6 +13,7 @@ export const SET_ORDER_STATUS = 'MAP_ACTIONS:SET_ORDER_STATUS';
 export const SET_CONDITIONAL_RIDE = 'MAP_ACTION:SET_CONDITIONAL_RIDE';
 export const SET_DRIVER_INFO = 'MAP_ACTION:SET_DRIVER_INFO';
 export const SET_ORDER_ID = 'MAP_ACTION:SET_ORDER_ID';
+export const NULIFY_STATE = 'MAP_ACION:NULIFY_STATE'
 
 type SetActiveDrivers = {
   type: typeof SET_ACTIVE_DRIVERS,
@@ -54,6 +55,10 @@ type SetOrderId = {
   payload: string,
 }
 
+type NuliFyState = {
+  type: typeof NULIFY_STATE,
+}
+
 export type MapAction =
  | SetActiveDrivers
  | SetActiveClient
@@ -63,5 +68,6 @@ export type MapAction =
  | SetIsLoading
  | SetDriverInfo
  | SetOrderId
+ | NuliFyState
 
 export type AsyncMapAction = Thunky<MapAction>;
