@@ -10,3 +10,13 @@ export const bookTrip = async (props: OrderProps) => {
 
   return response.json();
 };
+
+export const acceptOrder = async (props: any) => {
+  const response = await callWebApi({
+    endpoint: `/api/order/accept-order`,
+    type: 'POST',
+    request: props,
+  });
+
+  return response.json();
+};

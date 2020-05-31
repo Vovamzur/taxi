@@ -12,5 +12,6 @@ export enum OrderStatus {
 export type OrderProps = {
   userId: string,
   from: Coordinate,
-  to: Coordinate
+  to: Coordinate,
+  clientSocketId: string,
 };

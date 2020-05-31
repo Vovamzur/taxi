@@ -8,7 +8,7 @@ import { Coordinate } from '../../types/coodrinate.types';
 const geoLocationUrl: string = process.env.REACT_APP_SOCKET_GEO_LOCATION_URL || '';
 const geoSocket = openSocket(geoLocationUrl);
 
-geoSocket.on('activeDrivers', (activeDrivers: Coordinate[]) => {
+geoSocket.on('activeDrivers', (activeDrivers: Array<Coordinate & { userId: string }>) => {
   store.dispatch(setActiveDrivers(activeDrivers));
 });
 
@@ -23,3 +23,5 @@ export const disconnectGeoLocation = (userId: User['id']): void => {
 export const getNearestDrivers = (userId: User['id'], userCoordinate: Coordinate): void => {
   geoSocket.emit('nearestDrivers', { userId, userCoordinate });
 }
+
+export const getSocketID = () => geoSocket.id

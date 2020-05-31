@@ -1,29 +1,30 @@
 version: "3.4"
 
 services:
-  postgres:
-    image: postgres
-    restart: always
-    logging:
-      driver: none
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: ${DB_USERNAME}
-      PGPORT: ${DB_PORT}
-      POSTGRES_MULTIPLE_DATABASES: ${POSTGRES_MULTIPLE_DATABASES}
-    volumes:
-      - /docker-volumes/postgres/data:/var/lib/postgresql/data
-    ports:
-      - "${DB_PORT}:${DB_PORT}"
+  # postgres:
+  #   image: postgres
+  #   restart: always
+  #   logging:
+  #     driver: none
+  #   environment:
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #     PGPORT: ${DB_PORT}
+  #     POSTGRES_MULTIPLE_DATABASES: ${POSTGRES_MULTIPLE_DATABASES}
+  #   volumes:
+  #     - /docker-volumes/postgres/data:/var/lib/postgresql/data
+  #   ports:
+  #     - "${DB_PORT}:${DB_PORT}"
 
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
     hostname: zookeeper
-    
+
   kafka:
     image: wurstmeister/kafka
+    hostname: kafka1
     command: [start-kafka.sh]
     ports:
       - "9092:9092"
@@ -32,5 +33,60 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19092,LISTENER_DOCKER_EXTERNAL://-127.0.0.1:9092
     depends_on:
       - zookeeper
+
+  # authentication:
+  #   build:
+  #     context: authentication
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3001:3001"
+  #   depends_on:
+  #     - "postgres"
+
+  # booking:
+  #   build:
+  #     context: booking
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3003:3003"
+  #   depends_on:
+  #     - "postgres"
+
+  # geo-location:
+  #   build:
+  #     context: geo-location
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5001:5001"
+  #   depends_on:
+  #     - "postgres"
+
+  # profile:
+  #   build:
+  #     context: profile
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3002:3002"
+  #   depends_on:
+  #     - "postgres"
+
+  # websocket:
+  #   build:
+  #     context: websocket
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5002:5002"
+  #   depends_on:
+  #     - "postgres"
+
+  # web-client:
+  #   build:
+  #     context: web-client
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - "postgres"

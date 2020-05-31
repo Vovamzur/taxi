@@ -27,9 +27,9 @@ async function start() {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.post('/nearestDrivers/:userId', async (req, res) => {
-      console.log(req.body)
       const allActiveDrivers = await knexConnection<Coordinate>('coordinates')
         .where('isActive', '=', true)
+        .where('isDriver', '=', true)
         .select();
       const nearestDrivers = getInRadius(allActiveDrivers, req.body);
       
@@ -44,6 +44,7 @@ async function start() {
           latitude,
           userId,
           isActive: true,
+          isDriver: true,
           socketId: socket.id
         }
         const userCoordinates = await knexConnection<Coordinate>('coordinates')
@@ -71,8 +72,10 @@ async function start() {
       socket.on('nearestDrivers', async ({ userId, userCoordinate }: { userId: string, userCoordinate: Coordinate}) => {
         const allActiveDrivers = await knexConnection<Coordinate>('coordinates')
           .where('userId', '<>', userId)
+          .where('isDriver', '=', true)
           .where('isActive', '=', true)
           .select();
+        
         const nearestDrivers = getInRadius(allActiveDrivers, userCoordinate);
 
         socket.emit('activeDrivers', nearestDrivers)

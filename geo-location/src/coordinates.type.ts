@@ -10,6 +10,7 @@ export type UpdateCoordinates = {
 
 export type Coordinate = Position & {
   id?: string;
+  isDriver: boolean;
   userId: string;
   isActive: boolean;
   socketId: string;

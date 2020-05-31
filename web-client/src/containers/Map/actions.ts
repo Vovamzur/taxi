@@ -7,6 +7,7 @@ import {
   SET_ORDER_STATUS,
   SET_CONDITIONAL_RIDE,
   SET_IS_LOADING,
+  SET_DRIVER_INFO,
   MapAction,
   AsyncMapAction,
 } from './actionTypes';
@@ -17,13 +18,15 @@ import { Driver } from 'types/profile.types';
 import { OrderStatus } from 'types/order.types';
 import { ConditionaRide } from './reducer';
 import { OrderProps } from 'types/order.types';
+import { notificationSocket } from 'helpers/socket/bookingSocket';
+import { DriverInfo } from './reducer';
 
 const setIsLoading = (isLoading: boolean): MapAction => ({
   type: SET_IS_LOADING,
   payload: isLoading,
-}) 
+})
 
-export const setActiveDrivers = (activeDrivers: Coordinate[]): MapAction => ({
+export const setActiveDrivers = (activeDrivers: Array<Coordinate & { userId: string }>): MapAction => ({
   type: SET_ACTIVE_DRIVERS,
   paylod: activeDrivers,
 });
@@ -48,9 +51,32 @@ export const setConditionalRide = (ride: ConditionaRide | null): MapAction => ({
   payload: ride,
 });
 
-export const bookTrip = ({ userId, from, to }: OrderProps): AsyncMapAction =>
-  async (dispatch, getRootState) => {
-    const order = await bookingService.bookTrip({ userId, from, to });
+export const setDriverInfo = (driverInfo: DriverInfo): MapAction => ({
+  type: SET_DRIVER_INFO,
+  payload: driverInfo
+})
 
-    console.log(order)
+export const setConditionalRideAsync = (ride: ConditionaRide): AsyncMapAction =>
+  async (dispatch) => dispatch(setConditionalRide(ride))
+
+export const bookTrip = ({ userId, from, to }: any): AsyncMapAction =>
+  async (dispatch, getRootState) => {
+    const order = await bookingService.bookTrip({
+      userId,
+      from,
+      to,
+      clientSocketId: notificationSocket.id
+    });
+
+    if (order.sucess) {
+      feedback.success('Booked')
+      dispatch(setOrderStatus(OrderStatus.PENDING))
+    }
+  };
+
+export const acceptOrder = (
+  { orderId, driverSocketId, fio }: { orderId: string, driverSocketId: string, fio: string }
+): AsyncMapAction =>
+  async (dispatch) => {
+    cons
   };

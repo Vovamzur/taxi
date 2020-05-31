@@ -6,7 +6,7 @@ const router = Router();
 
 router
   .post('/new-order', (req, res, next) =>
-    orderService.newOrder(req.body)
+    orderService.newOrder(req.body, req.io)
       .then(data => res.send(data))
       .catch(next),
   )

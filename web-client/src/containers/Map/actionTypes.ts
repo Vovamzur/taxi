@@ -3,7 +3,7 @@ import { Coordinate } from 'types/coodrinate.types';
 import { Driver } from 'types/profile.types';
 import { User } from 'types/user.types';
 import { OrderStatus } from 'types/order.types';
-import { ConditionaRide } from './reducer';
+import { ConditionaRide, DriverInfo } from './reducer';
 
 export const SET_IS_LOADING = 'MAP_ACTION:SET_IS_LOADING';
 export const SET_ACTIVE_DRIVERS = 'MAP_ACTION:FETCH_ACTIVE_DRIVERS';
@@ -11,10 +11,12 @@ export const SET_ACTIVE_CLIENT = 'MAP_ACTION:SET_ACTIVE_CLIENT'
 export const SET_OWN_DRIVER = 'MAP_ACTION:SET_OEN_DRIVER';
 export const SET_ORDER_STATUS = 'MAP_ACTIONS:SET_ORDER_STATUS';
 export const SET_CONDITIONAL_RIDE = 'MAP_ACTION:SET_CONDITIONAL_RIDE';
+export const SET_DRIVER_INFO = 'MAP_ACTION:SET_DRIVER_INFO';
+export const SET_ORDER_ID = 'MAP_ACTION:SET_ORDER_ID';
 
 type SetActiveDrivers = {
   type: typeof SET_ACTIVE_DRIVERS,
-  paylod: Coordinate[];
+  paylod: Array<Coordinate & { userId: string }>;
 };
 
 type SetOwnDriver = {
@@ -42,6 +44,16 @@ type SetIsLoading = {
   payload: boolean
 };
 
+type SetDriverInfo = {
+  type: typeof SET_DRIVER_INFO,
+  payload: DriverInfo
+}
+
+type SetOrderId = {
+  type: typeof SET_ORDER_ID,
+  payload: string,
+}
+
 export type MapAction =
  | SetActiveDrivers
  | SetActiveClient
@@ -49,5 +61,7 @@ export type MapAction =
  | SetOrderStatus
  | SetCoditionalRide
  | SetIsLoading
+ | SetDriverInfo
+ | SetOrderId
 
 export type AsyncMapAction = Thunky<MapAction>;

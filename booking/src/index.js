@@ -2,12 +2,11 @@ import http from 'http';
 import dotenv from 'dotenv';
 
 import sequelize from './data/db/connection';
-import app from './app'
+import httpServer from './app'
 
 dotenv.config();
 
 const port = process.env.BOOKING_SERVICE_PORT;
-const httpServer = http.createServer(app);
 
 start();
 

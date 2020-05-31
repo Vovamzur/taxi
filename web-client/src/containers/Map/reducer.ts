@@ -5,6 +5,7 @@ import {
   SET_ORDER_STATUS,
   SET_CONDITIONAL_RIDE,
   SET_IS_LOADING,
+  SET_DRIVER_INFO,
   MapAction
 } from './actionTypes';
 import { Driver } from 'types/profile.types';
@@ -15,16 +16,24 @@ import { Coordinate } from 'types/coodrinate.types';
 export type ConditionaRide = {
   from: Coordinate,
   to: Coordinate,
-  useFio: string,
+  userFio: string,
+  newOrderId: string,
 };
+
+export type DriverInfo = {
+  fio: string,
+  userId: string,
+}
 
 type State = {
   isLoading: boolean,
-  activeDrivers: Coordinate[],
+  activeDrivers: Array<Coordinate & { userId: string }>,
   ownDriver: Driver | null,
   activeClient: User & Coordinate | null,
   orderStatus: OrderStatus,
   conditionalRide: ConditionaRide | null,
+  driverInfo: DriverInfo | null,
+  orderId: string | null
 };
 
 const initialState: State = {
@@ -34,6 +43,8 @@ const initialState: State = {
   activeClient: null,
   orderStatus: OrderStatus.NONE,
   conditionalRide: null,
+  driverInfo: null,
+  orderId: null,
 };
 
 export default (state = initialState, action: MapAction): State => {
@@ -72,6 +83,12 @@ export default (state = initialState, action: MapAction): State => {
       return {
         ...state,
         conditionalRide: action.payload
+      }
+
+    case SET_DRIVER_INFO:
+      return {
+        ...state,
+        driverInfo: action.payload
       }
 
     default:

@@ -39,6 +39,7 @@ export default (io: SocketIO.Server): void => {
     });
 
     createOrderConsumer.on('message', (newOrder: any) => {
+      console.log(newOrder)
       socket.in(rooms.DRIVER_ROOM).emit(events.CREATE_ORDER, newOrder);
     });
 

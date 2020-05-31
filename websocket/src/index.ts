@@ -13,5 +13,5 @@ const io: SocketIO.Server = socketIO(httpServer);
 socketHandlers(io);
 
 httpServer.listen(port, () => {
-  console.log(`Web sokcket service start on port ${port}`);
+  console.log(`Web socket service start on port ${port}`);
 });

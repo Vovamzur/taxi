@@ -112,6 +112,10 @@ export default {
                 allowNull: false,
                 type: Sequelize.FLOAT
               },
+              isDriver: {
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
+              },
               isActive: {
                 allowNull: false,
                 type: Sequelize.BOOLEAN,
